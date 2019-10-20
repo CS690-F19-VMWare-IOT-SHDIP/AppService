@@ -10,7 +10,11 @@ import cs.usfca.edu.edgex.model.DeviceModel;
 import cs.usfca.edu.edgex.utils.Flow;
 import cs.usfca.edu.edgex.utils.Node;
 
-public class SmartHomeDevicePlatform {
+/**
+ * Driver class for AppService.
+ *
+ */
+public class AppService {
 	public static void main(String args[]) throws InterruptedException {
 		System.out.println("Welcome to IOT workflow!");
 		DeviceModel bulbDeviceModel = new DeviceModel("dummy", "dummy", "dummy");

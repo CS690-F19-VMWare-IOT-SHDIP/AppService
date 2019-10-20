@@ -1,5 +1,9 @@
 package cs.usfca.edu.edgex.model;
 
+/**
+ * DeviceModel specifies the device specific attributes
+ * that can be used to call specific events on physical device.
+ */
 public class DeviceModel {
 	private String deviceName;
 	private String command;

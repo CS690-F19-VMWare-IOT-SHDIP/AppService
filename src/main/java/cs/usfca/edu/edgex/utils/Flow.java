@@ -1,5 +1,9 @@
 package cs.usfca.edu.edgex.utils;
 
+/**
+ * The Flow class represents the workflow of the events.
+ *
+ */
 public class Flow {
 	private String flowId;
 	private Node head;
@@ -8,6 +12,12 @@ public class Flow {
 		this.head = head;
 	}
 	
+	/**
+	 * This will execute the flow once all the events are 
+	 * active for head node.
+	 * @return
+	 * @throws InterruptedException
+	 */
 	public boolean executeFlow() throws InterruptedException {
 		while(!head.checkAllEvents()) {
 			System.out.println("Waiting for flow to execute!");
@@ -21,6 +31,11 @@ public class Flow {
 		return flag;
 	}
 	
+	/**
+	 * Execute flow helper.
+	 * @param node
+	 * @return
+	 */
 	private boolean executeFlow(Node node) {
 		boolean flag = node.triggerAllEvents();
 		if(flag) {
