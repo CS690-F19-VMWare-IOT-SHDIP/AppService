@@ -1,7 +1,5 @@
 package cs.usfca.edu.edgex.device;
 
-import cs.usfca.edu.edgex.event.deviceevent.DeviceEvent;
-
 /**
  * Interface to support different type of devices.
  *
@@ -27,5 +25,5 @@ public interface Device<T> {
 	 * @param event
 	 * @return boolean
 	 */
-	public boolean isSupported(DeviceEvent<T> event);
+	public DeviceType getDeviceType();
 }
