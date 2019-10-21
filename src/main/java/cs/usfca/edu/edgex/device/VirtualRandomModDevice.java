@@ -2,18 +2,20 @@ package cs.usfca.edu.edgex.device;
 
 import java.util.Random;
 
+import cs.usfca.edu.edgex.model.RandomModInput;
+
 public class VirtualRandomModDevice implements Device<Integer> {
 
 	private Random random;
-	private int n;
+	RandomModInput input;
 	
-	public VirtualRandomModDevice(int n) {
-		this.n = n;
+	public VirtualRandomModDevice(RandomModInput input) {
+		this.input = input;
 		this.random = new Random();
 	}
 	
 	public Integer get() {
-		return random.nextInt() % n;
+		return random.nextInt() % input.getVal();
 	}
 
 	public void set(Integer val) {
@@ -22,6 +24,10 @@ public class VirtualRandomModDevice implements Device<Integer> {
 
 	public DeviceType getDeviceType() {
 		return DeviceType.VIRTUAL;
+	}
+
+	public Object getDevice() {
+		return input;
 	}
 	
 }

@@ -1,11 +1,12 @@
 package cs.usfca.edu.edgex;
 
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import cs.usfca.edu.edgex.device.BulbDevice;
 import cs.usfca.edu.edgex.device.Device;
 import cs.usfca.edu.edgex.device.VirtualRandomModDevice;
+import cs.usfca.edu.edgex.device.physicaldevices.BulbDevice;
 import cs.usfca.edu.edgex.event.Event;
 import cs.usfca.edu.edgex.event.LightOnEvent;
 import cs.usfca.edu.edgex.event.RandomModEvent;
@@ -19,6 +20,7 @@ import cs.usfca.edu.edgex.utils.Node;
  *
  */
 @SpringBootApplication
+@EnableAutoConfiguration
 public class AppService {
 	public static void main(String args[]) throws InterruptedException, UnsupportedDeviceTypeException {
 		SpringApplication.run(AppService.class, args);
