@@ -27,7 +27,7 @@ public class EventAPI {
     @ResponseBody()
 	public Event getEvent() throws NoSuchMethodException, SecurityException, 
 		InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		return EventHandlers.getObjectForEvent("RandomModEvent", new VirtualRandomModDevice(10));
+		return EventHandlers.getObjectForEvent("RandomModEvent", new VirtualRandomModDevice(null));
 	}
 	
 	@GetMapping("/listEventForType/{deviceType}")
