@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cs.usfca.edu.edgex.device.Device;
-import cs.usfca.edu.edgex.device.DeviceType;
 import cs.usfca.edu.edgex.model.DeviceIdModel;
 import cs.usfca.edu.edgex.model.RandomModInput;
 
