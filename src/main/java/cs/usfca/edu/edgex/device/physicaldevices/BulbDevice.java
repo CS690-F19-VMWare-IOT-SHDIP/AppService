@@ -1,11 +1,13 @@
-package cs.usfca.edu.edgex.device;
+package cs.usfca.edu.edgex.device.physicaldevices;
 
+import cs.usfca.edu.edgex.device.Device;
+import cs.usfca.edu.edgex.device.DeviceType;
 import cs.usfca.edu.edgex.model.DeviceModel;
 
 /**
  * Device for device type Bulb.
  */
-public class BulbDevice implements Device<Boolean> {
+public class BulbDevice implements PhysicalDevice<Boolean> {
 	
 	private DeviceModel bulb;
 	private Boolean value;
@@ -35,9 +37,25 @@ public class BulbDevice implements Device<Boolean> {
 		System.out.println("Setting Bulb to: " + value);
 		this.value = value;
 	}
-
+	
+	/**
+	 * Returns the type of device this class represents.
+	 * @return DeviceType
+	 */
 	public DeviceType getDeviceType() {
-		return DeviceType.BULB;
+		return bulb.getDeviceType();
+	}
+	
+	/**
+	 * Get impelemented device.
+	 */
+	public Object getDevice() {
+		return bulb;
+	}
+
+	@Override
+	public DeviceModel getDeviceModel() {
+		return bulb;
 	}
 
 }

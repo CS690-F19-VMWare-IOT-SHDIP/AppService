@@ -26,4 +26,10 @@ public interface Device<T> {
 	 * @return boolean
 	 */
 	public DeviceType getDeviceType();
+	
+	/**
+	 * Get DeviceName
+	 * @return String
+	 */
+	public Object getDevice();
 }

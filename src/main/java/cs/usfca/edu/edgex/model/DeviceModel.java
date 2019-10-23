@@ -1,5 +1,7 @@
 package cs.usfca.edu.edgex.model;
 
+import cs.usfca.edu.edgex.device.DeviceType;
+
 /**
  * DeviceModel specifies the device specific attributes
  * that can be used to call specific events on physical device.
@@ -8,13 +10,14 @@ public class DeviceModel {
 	private String deviceName;
 	private String command;
 	private String resourceName;
+	private DeviceType deviceType;
 	
-	public DeviceModel(String deviceName, String command, String resourceName) {
-		this.deviceName = deviceName;
-		this.command = command;
-		this.resourceName = resourceName;
+	public DeviceType getDeviceType() {
+		return deviceType;
 	}
-	
+	public void setDeviceType(DeviceType deviceType) {
+		this.deviceType = deviceType;
+	}
 	public String getDeviceName() {
 		return deviceName;
 	}
