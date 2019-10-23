@@ -54,9 +54,9 @@ public class FlowHandlers {
 	
 	private static Node addEventsToNode(NodeModel nodeModel, Node node) throws EventNotFoundException{
 		for(String eventId: nodeModel.eventIds) {
-			if(!EventHandlers.getBindEventsToDeviceMap().containsKey(eventId))
+			if(!EventHandlers.getEvents().containsKey(eventId))
 				throw new EventNotFoundException(eventId);
-			node.addEvent(EventHandlers.bindEventsToDeviceMap.get(eventId));
+			node.addEvent(EventHandlers.getEvents().get(eventId));
 		}
 		return node;
 	}
