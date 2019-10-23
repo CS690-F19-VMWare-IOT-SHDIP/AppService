@@ -1,5 +1,7 @@
 package cs.usfca.edu.edgex.utils;
 
+import cs.usfca.edu.edgex.apis.flowapis.FlowHandlers;
+
 /**
  * The Flow class represents the workflow of the events.
  *
@@ -8,8 +10,13 @@ public class Flow {
 	private String flowId;
 	private Node head;
 	
-	public Flow(Node head) {
+	public Flow(Node head, String flowId) {
 		this.head = head;
+		this.flowId = flowId;
+	}
+	
+	public String getFlowId() {
+		return this.flowId;
 	}
 	
 	/**
@@ -19,16 +26,19 @@ public class Flow {
 	 * @throws InterruptedException
 	 */
 	public boolean executeFlow() throws InterruptedException {
-		while(!head.checkAllEvents()) {
-			System.out.println("Waiting for flow to execute!");
-			Thread.sleep(3000);
+//		while(!head.checkAllEvents()) {
+//			System.out.println("Waiting for flow to execute!");
+//			Thread.sleep(3000);
+//		}
+		if(head.checkAllEvents()) {
+			System.out.println("Executing flow!");
+			boolean flag = true;
+			for(Node child : head.getChildren()) {
+				flag &= executeFlow(child);
+			}
+			return flag;
 		}
-		System.out.println("Executing flow!");
-		boolean flag = true;
-		for(Node child : head.getChildren()) {
-			flag &= executeFlow(child);
-		}
-		return flag;
+		return false;
 	}
 	
 	/**

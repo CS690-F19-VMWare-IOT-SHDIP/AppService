@@ -14,9 +14,10 @@ public class Node {
 	private List<Event> events;
 	private List<Node> children;
 	
-	public Node() {
+	public Node(String nodeId) {
 		this.events = new LinkedList<Event>();
 		this.children = new LinkedList<Node>();
+		this.nodeId = nodeId;
 	}
 	
 	/**
