@@ -50,4 +50,19 @@ public class LightOffEvent implements Event {
 	public static DeviceType getDeviceType() {
 		return deviceType;
 	}
+
+	@Override
+	public int compareTo(Event o) {
+		System.out.println("LIGHTOFF compareTo");
+		
+//		System.out.println("<< " + this.getClass() + " : " +  o.getClass());
+//		System.out.println("<< " + this.getDevice().hashCode() + " : " +  o.getDevice().hashCode());
+//		return ( (this.getClass() == o.getClass()) && (this.getDevice().hashCode() == o.getDevice().hashCode() )  ? 0 : 1);
+		return 0;
+	}
+
+	@Override
+	public Device<?> getDevice() {
+		return this.bulb;
+	}
 }
