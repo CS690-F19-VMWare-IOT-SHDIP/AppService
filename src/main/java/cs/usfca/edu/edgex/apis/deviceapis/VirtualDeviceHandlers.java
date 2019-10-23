@@ -47,4 +47,8 @@ public class VirtualDeviceHandlers {
 	public static Device<?> listDeviceWithId(String deviceId) {
 		return virtualDevices.get(deviceId);
 	}
+	
+	public static Map<String, Device<?>> getVirtualDevices() {
+        return new HashMap<String, Device<?>>(virtualDevices);
+    }
 }

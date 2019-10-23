@@ -1,9 +1,11 @@
 package cs.usfca.edu.edgex.event;
 
+import cs.usfca.edu.edgex.device.Device;
+
 /**
  * Interface to support different type of Events.
  */
-public interface Event {
+public interface Event extends Comparable<Event> {
 	
 	/**
 	 * Checks if the current event is active
@@ -16,4 +18,6 @@ public interface Event {
 	 * Triggers current event on given device.
 	 */
 	public void trigger();
+	
+	public Device<?> getDevice();
 }

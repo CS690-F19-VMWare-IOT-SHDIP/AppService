@@ -54,4 +54,8 @@ public class DeviceHandlers {
 		return new LinkedList<DeviceType>(EnumSet.allOf(DeviceType.class));
 	}
 	
+	public static Map<String, PhysicalDevice<?>> getPhysicalDevices() {
+        return new HashMap<String, PhysicalDevice<?>>(physicalDevices);
+    }
+	
 }
