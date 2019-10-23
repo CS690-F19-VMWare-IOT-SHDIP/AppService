@@ -21,11 +21,12 @@ import cs.usfca.edu.edgex.event.Event;
 
 public class EventHandlers {
 	private static Map<String, Class<?>> supportedEvents;
-	public static HashMap<String, Event> bindEventsToDeviceMap = new HashMap<String, Event>();
-	public static HashMap<String, ArrayList<Device<?>>> eventNameToDevices = new HashMap<String, ArrayList<Device<?>>>();
+	private static HashMap<String, Event> events = new HashMap<String, Event>();
+	private static HashMap<String, ArrayList<Device<?>>> eventNameToDevices = new HashMap<String, ArrayList<Device<?>>>();
 	
-	/*
+	/**
 	 * Show all supported events from packages : cs.usfca.edu.edgex.event of class type Event.
+	 * @return Set<String>
 	 */
 	public static Set<String> getListOfEventTypes() {
 		if(supportedEvents == null) {
@@ -41,8 +42,15 @@ public class EventHandlers {
 	}
 	
 	
-	/*
-	 * List events with pertaining to specific device-type.
+	/**
+	 * List events pertaining to a specific device-type.
+	 * @param type
+	 * @return Set<String>
+	 * @throws NoSuchMethodException
+	 * @throws SecurityException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
 	 */
 	public static Set<String> listEventsWithType(DeviceType type) throws NoSuchMethodException, SecurityException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		Set<String> set = new HashSet<String>();
@@ -58,9 +66,18 @@ public class EventHandlers {
 		return set;
 	}
 	
-	/*
+	/**
 	 * Given an event name and device, check if concerned event class can be binded with the given device.
-	 * If success, check if such and eventID already present or not and then return an eventID
+	 * If success, check if such an eventID already present or not and then return an eventID
+	 * @param eventName
+	 * @param device
+	 * @return String
+	 * @throws NoSuchMethodException
+	 * @throws SecurityException
+	 * @throws InstantiationException
+	 * @throws IllegalAccessException
+	 * @throws IllegalArgumentException
+	 * @throws InvocationTargetException
 	 */
 	public static String bindEventToDevice(String eventName, Device<?> device) 
 			throws NoSuchMethodException, SecurityException, InstantiationException, 
@@ -82,12 +99,10 @@ public class EventHandlers {
 		return eventID;
 	}
 	
-	public static HashMap<String, Event> getBindEventsToDeviceMap() {
-		return bindEventsToDeviceMap;
-	}
-	
-	/*
+	/**
 	 * Return all event names that are binded to a specific device.
+	 * @param device
+	 * @return ArrayList<String>
 	 */
 	public static ArrayList<String> getEventNamesForDevice(Device<?> device) {
 		ArrayList<String> eventNames = new ArrayList<>();
@@ -101,11 +116,13 @@ public class EventHandlers {
 		return eventNames;
 	}
 	
-	/*
-	 * Read through bindEventsToDeviceMap to check if eventID is created or not for an Event
+	/**
+	 * Read through events map to check if eventID is created or not for an Event
+	 * @param eventToDevice
+	 * @return String
 	 */
 	public static String checkBindMap(Event eventToDevice) {
-		for(Map.Entry<String, Event> entry : bindEventsToDeviceMap.entrySet()) {
+		for(Map.Entry<String, Event> entry : events.entrySet()) {
 			System.out.println("<< " + entry.getValue().compareTo(eventToDevice));
 			if(entry.getValue().compareTo(eventToDevice) == 0) { 
 				return entry.getKey();
@@ -114,17 +131,21 @@ public class EventHandlers {
 		return "";
 	}
 	
-	/*
-	 * Add new event binded to a device into map and return it's ID
+	/**
+	 * Add new event binded to a device into map and return it's eventID
+	 * @param eventToDevice
+	 * @return String
 	 */
 	public static String addToBindMap(Event eventToDevice) {
 		String eventID = UUID.randomUUID().toString();
-		bindEventsToDeviceMap.put(eventID, eventToDevice);
+		events.put(eventID, eventToDevice);
 		return eventID;
 	}
 	
-	/*
+	/**
 	 * Update map of eventName --> List of devices
+	 * @param eventName
+	 * @param device
 	 */
 	public static void updateEventNameToDevices(String eventName, Device<?> device) {
 		if(eventNameToDevices.containsKey(eventName)) {
@@ -144,17 +165,26 @@ public class EventHandlers {
 		}
 	}
 	
-	/*
-	 * Remove a specific event binded to a device using eventID
+	/**
+	 * Remove a specific event binded to a device using eventID. 
+	 * Check if eventID is present in an active flow or not, if present, don't removie it.
+	 * @param eventID
+	 * @return boolean
 	 */
 	public static boolean removeEventID(String eventID) {
-		if(bindEventsToDeviceMap.containsKey(eventID)) {
-			bindEventsToDeviceMap.remove(eventID);
+		if(events.containsKey(eventID)) {
+			events.remove(eventID);
 			return true;
 		}
 		return false;
 	}
 	
+	/**
+	 * Remove a specific device from event to device
+	 * @param eventName
+	 * @param device
+	 * @return
+	 */
 	public static boolean removeDeviceFromEventName(String eventName, Device<?> device) {
 		if(eventNameToDevices.containsKey(eventName)) {
 			ArrayList<Device<?>> deviceList = eventNameToDevices.get(eventName);
@@ -165,6 +195,11 @@ public class EventHandlers {
 		return false;
 	}
 	
+	/**
+	 * Given a deviceID return a device. Check in physicalDevice and virtualDevice lists.
+	 * @param deviceID
+	 * @return Device<?>
+	 */
 	public static Device<?> getDeviceFromMap(String deviceID) {
 		HashMap<String, PhysicalDevice<?>> physicalDeviceMap = (HashMap<String, PhysicalDevice<?>>) DeviceHandlers.getPhysicalDevices();
 		HashMap<String, Device<?>> virtualDeviceMap = (HashMap<String, Device<?>>) VirtualDeviceHandlers.getVirtualDevices();
@@ -181,6 +216,21 @@ public class EventHandlers {
 			}
 		}
 		return null;
-		
+	}
+	
+	/**
+	 * Return map of eventID --> Event 
+	 * @return HashMap<String, Event>
+	 */
+	public static Map<String, Event> getEvents() {
+		return new HashMap<String, Event>(events);
+	}
+	
+	/**
+	 * Return map of eventName associated with it's list of devices.
+	 * @return HashMap<String, ArrayList<Device<?>>>
+	 */
+	public static Map<String, ArrayList<Device<?>>> getEventNameToDevices() {
+		return new HashMap<String, ArrayList<Device<?>>>(eventNameToDevices);
 	}
 }
