@@ -5,7 +5,7 @@ import cs.usfca.edu.edgex.device.Device;
 /**
  * Interface to support different type of Events.
  */
-public interface Event extends Comparable<Event> {
+public interface Event{
 	
 	/**
 	 * Checks if the current event is active
@@ -20,4 +20,10 @@ public interface Event extends Comparable<Event> {
 	public void trigger();
 	
 	public Device<?> getDevice();
+	
+	/**
+	 * Overriding equals to compare two devices.
+	 * @return boolean
+	 */
+	public boolean equals(Event event);
 }

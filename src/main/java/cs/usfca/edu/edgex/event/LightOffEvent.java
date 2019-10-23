@@ -52,17 +52,12 @@ public class LightOffEvent implements Event {
 	}
 
 	@Override
-	public int compareTo(Event o) {
-		System.out.println("LIGHTOFF compareTo");
-		
-//		System.out.println("<< " + this.getClass() + " : " +  o.getClass());
-//		System.out.println("<< " + this.getDevice().hashCode() + " : " +  o.getDevice().hashCode());
-//		return ( (this.getClass() == o.getClass()) && (this.getDevice().hashCode() == o.getDevice().hashCode() )  ? 0 : 1);
-		return 0;
-	}
-
-	@Override
 	public Device<?> getDevice() {
 		return this.bulb;
+	}
+	
+	@Override
+	public boolean equals(Event event) {
+		return (this.getClass().getSimpleName().equals(event.getClass().getSimpleName()));
 	}
 }

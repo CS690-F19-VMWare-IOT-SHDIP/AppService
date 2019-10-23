@@ -52,12 +52,12 @@ public class LEDOffEvent implements Event {
 	}
 
 	@Override
-	public int compareTo(Event o) {
-		return (this.getDevice().equals(o.getDevice()) ? 0 : 1);
+	public Device<?> getDevice() {
+		return this.led;
 	}
 
 	@Override
-	public Device<?> getDevice() {
-		return this.led;
+	public boolean equals(Event event) {
+		return (this.getClass().getSimpleName().equals(event.getClass().getSimpleName()));
 	}
 }

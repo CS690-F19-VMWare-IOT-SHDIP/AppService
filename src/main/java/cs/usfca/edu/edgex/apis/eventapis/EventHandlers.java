@@ -123,8 +123,8 @@ public class EventHandlers {
 	 */
 	public static String checkBindMap(Event eventToDevice) {
 		for(Map.Entry<String, Event> entry : events.entrySet()) {
-			System.out.println("<< " + entry.getValue().compareTo(eventToDevice));
-			if(entry.getValue().compareTo(eventToDevice) == 0) { 
+			
+			if((entry.getValue().equals(eventToDevice)) && (entry.getValue().getDevice().equals(eventToDevice.getDevice()) == true)) { 
 				return entry.getKey();
 			}
 		}
@@ -150,7 +150,9 @@ public class EventHandlers {
 	public static void updateEventNameToDevices(String eventName, Device<?> device) {
 		if(eventNameToDevices.containsKey(eventName)) {
 			System.out.println("APPEDNING : " + device);
-			eventNameToDevices.get(eventName).add(device);
+			if(!eventNameToDevices.get(eventName).contains(device)) {
+				eventNameToDevices.get(eventName).add(device);
+			}
 		}
 		else {
 			System.out.println("ADDING : " + device);
@@ -173,10 +175,26 @@ public class EventHandlers {
 	 */
 	public static boolean removeEventID(String eventID) {
 		if(events.containsKey(eventID)) {
-			events.remove(eventID);
+			Device<?> deletedDevice = events.remove(eventID).getDevice();
+//			removeDeviceFromAllEventNames(deletedDevice);
 			return true;
 		}
 		return false;
+	}
+	
+	/**
+	 * Remove a device from map of events connected to a list of devices.
+	 * @param device
+	 */
+	public static void removeDeviceFromAllEventNames(Device<?> device) {
+		for(Map.Entry<String, ArrayList<Device<?>>> entry : eventNameToDevices.entrySet()) {
+			if(entry.getValue().contains(device)) {
+				String eventName = entry.getKey();
+				ArrayList<Device<?>> devices = entry.getValue();
+				devices.remove(device);
+				eventNameToDevices.put(eventName, devices);
+			}
+		}
 	}
 	
 	/**

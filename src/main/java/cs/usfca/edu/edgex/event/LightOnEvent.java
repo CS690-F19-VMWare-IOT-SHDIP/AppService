@@ -54,13 +54,13 @@ public class LightOnEvent implements Event {
 	}
 
 	@Override
-	public int compareTo(Event o) {
-		return (this.getDevice().equals(o.getDevice()) ? 0 : 1);
-	}
-
-	@Override
 	public Device<?> getDevice() {
 		return this.bulb;
+	}
+	
+	@Override
+	public boolean equals(Event event) {
+		return (this.getClass().getSimpleName().equals(event.getClass().getSimpleName()));
 	}
 
 }
