@@ -32,4 +32,10 @@ public interface Device<T> {
 	 * @return String
 	 */
 	public Object getDevice();
+	
+	/**
+	 * Overriding equals to compare two devices.
+	 * @return boolean
+	 */
+	public boolean equals(Device<?> device);
 }
