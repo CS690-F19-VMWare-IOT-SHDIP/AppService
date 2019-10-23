@@ -5,10 +5,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 import java.util.UUID;
-
-import org.reflections.Reflections;
 
 import cs.usfca.edu.edgex.device.Device;
 import cs.usfca.edu.edgex.device.DeviceType;
@@ -19,6 +16,10 @@ public class DeviceHandlers {
 
 	private static Map<String, PhysicalDevice<?>> physicalDevices = new HashMap<String, PhysicalDevice<?>>();
 	
+	/**
+	 * Returns list of physical devices bind to a deviceId.
+	 * @return Map<String, DeviceModel>
+	 */
 	public static Map<String, DeviceModel> getAllPhysicalDevices() {
 		Map<String, DeviceModel> deviceModelMap = new HashMap<String, DeviceModel>();
 		for(String key : physicalDevices.keySet()) {
@@ -27,8 +28,17 @@ public class DeviceHandlers {
 		return deviceModelMap;
 	}
 	
+	/**
+	 * Registers new physical device and returns deviceId.
+	 * @param deviceModel
+	 * @return String
+	 */
 	public static String registerPhysicalDevice(DeviceModel deviceModel) {
 		PhysicalDevice<?> device = DeviceTypeToDeviceMap.getPhysicalDevice(deviceModel);
+		String key = getKeyForValue(device);
+		if(key != null) {
+			return key;
+		}
 		if(device.getDeviceType() != null) {
 			String deviceId = UUID.randomUUID().toString();
 			physicalDevices.put(deviceId, device);
@@ -37,10 +47,37 @@ public class DeviceHandlers {
 		return null;
 	}
 	
-	public static DeviceModel getPhysicalDeviceForDeviceId(String deviceId) {
-		return physicalDevices.get(deviceId).getDeviceModel();
+	/**
+	 * Returns key for given device.
+	 * @param device
+	 * @return String
+	 */
+	private static String getKeyForValue(Device<?> device) {
+		for(String i : physicalDevices.keySet()) {
+			if(physicalDevices.get(i).equals(device))
+				return i;
+		}
+		return null;
 	}
 	
+	/**
+	 * Returns deviceModel for given physical deviceId.
+	 * @param deviceId
+	 * @return DeviceModel
+	 */
+	public static DeviceModel getPhysicalDeviceForDeviceId(String deviceId) {
+		PhysicalDevice<?> device = physicalDevices.get(deviceId);
+		if(device != null) {
+			return device.getDeviceModel();
+		}
+		return null;
+	}
+	
+	/**
+	 * Returns list of physcial devices with given deviceType.
+	 * @param deviceType
+	 * @return Map<String, DeviceModel>
+	 */
 	public static Map<String, DeviceModel> listPhysicalDeviceWithType(DeviceType deviceType) {
 		Map<String, DeviceModel> deviceModelMap = new HashMap<String, DeviceModel>();
 		for(String key : physicalDevices.keySet()) {
@@ -50,12 +87,20 @@ public class DeviceHandlers {
 		return deviceModelMap;
 	}
 	
+	/**
+	 * Returns list of deviceTypes.
+	 * @return List<DeviceType>
+	 */
 	public static List<DeviceType> listDeviceTypes() {
 		return new LinkedList<DeviceType>(EnumSet.allOf(DeviceType.class));
 	}
 	
+	/**
+	 * Returns map of physical devices with deviceId.
+	 * @return Map<String, PhysicalDevice<?>>
+	 */
 	public static Map<String, PhysicalDevice<?>> getPhysicalDevices() {
-        return new HashMap<String, PhysicalDevice<?>>(physicalDevices);
-    }
+		return new HashMap<String, PhysicalDevice<?>>(physicalDevices);
+	}
 	
 }
