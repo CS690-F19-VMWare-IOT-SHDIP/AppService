@@ -18,6 +18,10 @@ public class VirtualDeviceHandlers {
 	private static Map<String, Device<?>> virtualDevices = new HashMap<String, Device<?>>();
 	private static Map<String, Class<?>> virtualDeviceTypes;
 	
+	/**
+	 * Returns list of supported virtual types.
+	 * @return Set<String>
+	 */
 	public static Set<String> listVirtualDeviceTypes() {
 		if(virtualDeviceTypes == null) {
 			virtualDeviceTypes = new HashMap<String, Class<?>>();
@@ -32,23 +36,57 @@ public class VirtualDeviceHandlers {
 		return virtualDeviceTypes.keySet();
 	}
 	
+	/**
+	 * Adds new random mod virtual device.
+	 * @param input
+	 * @return String
+	 */
 	public static String addRandomModDevice(RandomModInput input) {
-		// TODO: check if the device with similar configurations is present before adding it to virtualDevices.
 		VirtualRandomModDevice randomModDevice = new VirtualRandomModDevice(input);
+		String key = getKeyForValue(randomModDevice);
+		if(key != null) {
+			return key;
+		}
 		String randomModDeviceId = UUID.randomUUID().toString();
 		virtualDevices.put(randomModDeviceId, randomModDevice);
 		return randomModDeviceId;
 	}
 	
+	/**
+	 * Returns key for a given device value.
+	 * @param device
+	 * @return String
+	 */
+	private static String getKeyForValue(Device<?> device) {
+		for(String i : virtualDevices.keySet()) {
+			if(virtualDevices.get(i).equals(device))
+				return i;
+		}
+		return null;
+	}
+	
+	/**
+	 * Returns list of all virtual devices.
+	 * @return Map<String, Device<?>>
+	 */
 	public static Map<String, Device<?>> listAllVirtualDevices() {
 		return virtualDevices;
 	}
 	
-	public static Device<?> listDeviceWithId(String deviceId) {
+	/**
+	 * Returns device with provided deviceId.
+	 * @param deviceId
+	 * @return Device<?>
+	 */
+	public static Device<?> getDeviceWithId(String deviceId) {
 		return virtualDevices.get(deviceId);
 	}
 	
+	/**
+	 * Returns map of virtual devices with device Id.
+	 * @return Map<String, Device<?>>
+	 */
 	public static Map<String, Device<?>> getVirtualDevices() {
-        return new HashMap<String, Device<?>>(virtualDevices);
-    }
+		return new HashMap<String, Device<?>>(virtualDevices);
+	}
 }

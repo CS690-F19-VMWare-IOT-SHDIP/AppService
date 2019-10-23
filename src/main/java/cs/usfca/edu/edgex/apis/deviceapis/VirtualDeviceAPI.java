@@ -3,6 +3,8 @@ package cs.usfca.edu.edgex.apis.deviceapis;
 import java.util.Map;
 import java.util.Set;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,36 +15,59 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import cs.usfca.edu.edgex.device.Device;
 import cs.usfca.edu.edgex.model.DeviceIdModel;
+import cs.usfca.edu.edgex.model.ErrorModel;
 import cs.usfca.edu.edgex.model.RandomModInput;
 
 @Controller
-@RequestMapping("/virtualDevice")
+@RequestMapping("/virtual")
 public class VirtualDeviceAPI {
 	
-	// TODO: Add "Remove RandomModEvent" after flow/node APIs are complete.
+	// TODO: Add "Remove RandomModDevice" after flow/node APIs are complete.
+	// TODO: List all VirtualDevices with given VirtualDeviceType.
 	
-	@GetMapping(value = "/listVirtualDeviceTypes")
+	/**
+	 * List all virtual device types.
+	 * @return Set<String>
+	 */
+	@GetMapping(value = "/list/type")
 	@ResponseBody()
 	public Set<String> listVirtualDeviceTypes() {
 		return VirtualDeviceHandlers.listVirtualDeviceTypes();
 	}
 	
-	@PostMapping(value = "/addDevice/RandomModEvent", consumes = "application/json")
+	/**
+	 * Register virtualRandomModDevice.
+	 * @param input
+	 * @return DeviceIdModel
+	 */
+	@PostMapping(value = "/register/VirtualRandomModDevice", consumes = "application/json")
 	@ResponseBody()
 	public DeviceIdModel addRandomModEvent(@RequestBody RandomModInput input) {
 		return new DeviceIdModel(VirtualDeviceHandlers.addRandomModDevice(input));
 	}
 	
-	@GetMapping(value = "/listAllVirtualDevices")
+	/**
+	 * List all virtual devices.
+	 * @return Map<String, Device<?>>
+	 */
+	@GetMapping(value = "/list")
 	@ResponseBody()
 	public Map<String, Device<?>> listAllVirtualDevices() {
 		return VirtualDeviceHandlers.listAllVirtualDevices();
 	}
 	
-	@GetMapping(value = "/listDeviceWithId/{deviceId}")
+	/**
+	 * List virtual device with provided deviceId.
+	 * @param deviceId
+	 * @return ResponseEntity<?>
+	 */
+	@GetMapping(value = "/{deviceId}")
 	@ResponseBody()
-	public Device<?> listDeviceWithType(@PathVariable(value = "deviceId") String deviceId) {
-		// TODO: check if return value is null
-		return VirtualDeviceHandlers.listDeviceWithId(deviceId);
+	public ResponseEntity<?> getDeviceWithId(@PathVariable(value = "deviceId") String deviceId) {
+		Device<?> device = VirtualDeviceHandlers.getDeviceWithId(deviceId);
+		if(device != null) {
+			return ResponseEntity.status(HttpStatus.OK).body(device);
+		}
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorModel("No Device with DeviceId: " + deviceId + " Found!"));
 	}
 }
