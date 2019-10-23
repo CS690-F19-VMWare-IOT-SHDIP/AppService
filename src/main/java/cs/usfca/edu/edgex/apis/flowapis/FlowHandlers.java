@@ -16,12 +16,11 @@ public class FlowHandlers {
 	
 	public static String addFlow(FlowModel flowModel) {
 		Node head = new Node();
-		//for(String event: )
-		//Flow flow = new Flow();
+		// head = addEvents(flowModel.head, head);
 		return null;
 	}
 	
-	private Node addEvents(NodeModel nodeModel) throws EventNotFoundException{
+	private Node addEvents(NodeModel nodeModel, Node node) throws EventNotFoundException{
 		for(String event: nodeModel.eventIds) {
 			
 		}
