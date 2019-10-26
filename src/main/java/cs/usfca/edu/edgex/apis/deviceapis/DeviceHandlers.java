@@ -103,4 +103,15 @@ public class DeviceHandlers {
 		return new HashMap<String, PhysicalDevice<?>>(physicalDevices);
 	}
 	
+	public static String getPhysicalDeviceID(PhysicalDevice<?> device) {
+		String ID = null;
+		for(Map.Entry<String, PhysicalDevice<?>> entry : getPhysicalDevices().entrySet()) {
+			if(entry.getValue().equals(device)) {
+				ID = entry.getKey();
+				break;
+			}
+		}
+		return ID;
+	}
+	
 }
