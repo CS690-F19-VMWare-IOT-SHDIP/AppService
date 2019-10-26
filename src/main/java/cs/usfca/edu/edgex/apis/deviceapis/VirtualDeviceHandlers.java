@@ -89,4 +89,15 @@ public class VirtualDeviceHandlers {
 	public static Map<String, Device<?>> getVirtualDevices() {
 		return new HashMap<String, Device<?>>(virtualDevices);
 	}
+	
+	public static String getVirtualDeviceID(Device<?> device) {
+		String ID = null;
+		for(Map.Entry<String, Device<?>> entry : getVirtualDevices().entrySet()) {
+			if(entry.getValue().equals(device)) {
+				ID = entry.getKey();
+				break;
+			}
+		}
+		return ID;
+	}
 }

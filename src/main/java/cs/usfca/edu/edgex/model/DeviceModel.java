@@ -8,6 +8,8 @@ import cs.usfca.edu.edgex.device.DeviceType;
  */
 public class DeviceModel {
 	private String deviceName;
+	// TODO : Create a map to support single-device multiple-commands and resource-names.
+	// TODO : Consider deviceID inside DeviceModel
 	private String command;
 	private String resourceName;
 	private DeviceType deviceType;

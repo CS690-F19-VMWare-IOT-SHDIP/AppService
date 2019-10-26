@@ -221,19 +221,13 @@ public class EventHandlers {
 	public static Device<?> getDeviceFromMap(String deviceID) {
 		HashMap<String, PhysicalDevice<?>> physicalDeviceMap = (HashMap<String, PhysicalDevice<?>>) DeviceHandlers.getPhysicalDevices();
 		HashMap<String, Device<?>> virtualDeviceMap = (HashMap<String, Device<?>>) VirtualDeviceHandlers.getVirtualDevices();
-
-		for(Map.Entry<String, PhysicalDevice<?>> entry : physicalDeviceMap.entrySet()) {
-			if(entry.getKey().equals(deviceID)) {
-				return entry.getValue();
-			}
+		Device<?> device = null;
+		if(physicalDeviceMap.get(deviceID) != null) {
+			device = physicalDeviceMap.get(deviceID);
+		} else if(virtualDeviceMap.get(deviceID) != null) {
+			device = virtualDeviceMap.get(deviceID);
 		}
-		
-		for(Map.Entry<String, Device<?>> entry : virtualDeviceMap.entrySet()) {
-			if(entry.getKey().equals(deviceID)) {
-				return entry.getValue();
-			}
-		}
-		return null;
+		return device;
 	}
 	
 	/**
