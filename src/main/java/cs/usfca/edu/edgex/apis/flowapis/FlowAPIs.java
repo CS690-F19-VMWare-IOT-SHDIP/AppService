@@ -20,7 +20,7 @@ import cs.usfca.edu.edgex.utils.Constants;
 @Controller
 @RequestMapping("/flow")
 public class FlowAPIs {
-	
+	// TODO : Don't re-execute the flow if it's activated once
 	@PostMapping(value = "/add", consumes = "application/json")
 	@ResponseBody()
 	public ResponseEntity<?> registerFlow(@RequestBody FlowModel flowModel) {
@@ -38,6 +38,7 @@ public class FlowAPIs {
 	@PostMapping(value = "/activate", consumes = "application/json")
 	@ResponseBody()
 	public ResponseEntity<?> activateFlow(@RequestBody FlowIdModel flowIdModel) {
+	
 		boolean resp = FlowHandlers.activateFlow(flowIdModel.getFlowId());
 		if(resp) {
 			return ResponseEntity.status(HttpStatus.OK).body("flow " + flowIdModel.getFlowId() + " activated successfully");

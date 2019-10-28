@@ -17,8 +17,8 @@ public class EdgeXClient {
 		
 		String response = request.getResponse(con);
 		if (response != null) {
-			DeviceEvent[] dEvent = new Gson().fromJson(response.toString(), DeviceEvent[].class);
-			System.out.println("Data : " + dEvent[0].getDeviceName() + " : " + dEvent[0].getReadings().get(0).getResourceName() + " : " + dEvent[0].getReadings().get(0).getValue());
+			DeviceEvent dEvent = new Gson().fromJson(response.toString(), DeviceEvent.class);
+			System.out.println("Data : " + dEvent.getDeviceName() + " : " + dEvent.getReadings().get(0).getResourceName() + " : " + dEvent.getReadings().get(0).getValue());
 			return response;
 		} 
 		return null;
@@ -38,6 +38,15 @@ public class EdgeXClient {
 		}
 		
 		return "";
+	}
+	
+	public static String getDeviceID(String deviceName) {
+		String urlPath = URLPaths.GET_DEVICE_META.replaceAll("\\{deviceName\\}", deviceName);
+		URL url = request.url(URLPaths.HOSTANME, urlPath);
+		System.out.println(url);
+		HttpURLConnection con = request.connect(url, "GET");
+		String response = request.getResponse(con);
+		return response;
 	}
 	
 

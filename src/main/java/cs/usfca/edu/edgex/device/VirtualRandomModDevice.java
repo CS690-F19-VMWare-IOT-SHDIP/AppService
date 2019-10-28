@@ -25,6 +25,7 @@ public class VirtualRandomModDevice implements Device<Integer> {
 	 * return Integer
 	 */
 	public Integer get() {
+		// TODO : catch divide by zero exception
 		return random.nextInt() % input.getVal();
 	}
 

@@ -31,7 +31,7 @@ public class Flow {
 //			Thread.sleep(3000);
 //		}
 		if(head.checkAllEvents()) {
-			System.out.println("Executing flow!");
+			System.out.println("Executing flow with flowId: " + flowId.substring(5));
 			boolean flag = true;
 			for(Node child : head.getChildren()) {
 				flag &= executeFlow(child);

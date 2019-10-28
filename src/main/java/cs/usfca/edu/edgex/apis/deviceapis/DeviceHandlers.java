@@ -7,13 +7,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import com.google.gson.Gson;
+
 import cs.usfca.edu.edgex.device.Device;
 import cs.usfca.edu.edgex.device.DeviceType;
 import cs.usfca.edu.edgex.device.physicaldevices.PhysicalDevice;
+import cs.usfca.edu.edgex.edgexclient.DeviceID;
+import cs.usfca.edu.edgex.edgexclient.EdgeXClient;
 import cs.usfca.edu.edgex.model.DeviceModel;
 
 public class DeviceHandlers {
-
+	private static Gson gson = new Gson();
 	private static Map<String, PhysicalDevice<?>> physicalDevices = new HashMap<String, PhysicalDevice<?>>();
 	
 	/**
@@ -40,9 +44,11 @@ public class DeviceHandlers {
 			return key;
 		}
 		if(device.getDeviceType() != null) {
-			String deviceId = UUID.randomUUID().toString();
-			physicalDevices.put(deviceId, device);
-			return deviceId;
+//			String deviceId = UUID.randomUUID().toString();
+			DeviceID deviceId = gson.fromJson(EdgeXClient.getDeviceID(device.getDeviceModel().getDeviceName()), DeviceID.class);
+			physicalDevices.put(deviceId.getDeviceID(), device);
+			System.out.println("DEVICE ID : " + deviceId.getDeviceID());
+			return deviceId.getDeviceID();
 		}
 		return null;
 	}

@@ -43,6 +43,7 @@ public class VirtualDeviceAPI {
 	@PostMapping(value = "/register/VirtualRandomModDevice", consumes = "application/json")
 	@ResponseBody()
 	public DeviceIdModel addRandomModEvent(@RequestBody RandomModInput input) {
+		// TODO : spring bug check, incorrect object passed by user
 		return new DeviceIdModel(VirtualDeviceHandlers.addRandomModDevice(input));
 	}
 	
