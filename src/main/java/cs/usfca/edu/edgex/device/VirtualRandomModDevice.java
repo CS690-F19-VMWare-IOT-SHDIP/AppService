@@ -16,6 +16,8 @@ public class VirtualRandomModDevice implements Device<Integer> {
 	 * @param input
 	 */
 	public VirtualRandomModDevice(RandomModInput input) {
+		if(input.getVal() == 0)
+			throw new ArithmeticException("Divide by 0");
 		this.input = input;
 		this.random = new Random();
 	}
@@ -25,7 +27,6 @@ public class VirtualRandomModDevice implements Device<Integer> {
 	 * return Integer
 	 */
 	public Integer get() {
-		// TODO : catch divide by zero exception
 		return random.nextInt() % input.getVal();
 	}
 

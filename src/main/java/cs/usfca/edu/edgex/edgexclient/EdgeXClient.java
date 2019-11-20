@@ -5,6 +5,7 @@ import java.net.URL;
 
 import com.google.gson.Gson;
 import cs.usfca.edu.edgex.model.DeviceModel;
+import cs.usfca.edu.edgex.utils.URLPaths;
 
 public class EdgeXClient {
 	private static Request request = new Request();
@@ -24,6 +25,7 @@ public class EdgeXClient {
 		return null;
 	}
 	
+	// TODO: Make put boolean.
 	public static String put(DeviceModel deviceModel, String deviceID, String putBody) {
 		
 		System.out.println("** " + putBody);
@@ -33,6 +35,7 @@ public class EdgeXClient {
 		HttpURLConnection con = request.connect(url, "PUT");
 		
 		if(request.writeToBody(con, putBody)) {
+			// TODO: Check response and convert json string to object. Check value and return boolean accordingly
 			String response = request.getResponse(con);
 			System.out.println("PUT RESPONSE : " + response);
 		}

@@ -22,9 +22,6 @@ import cs.usfca.edu.edgex.model.RandomModInput;
 @Controller
 @RequestMapping("/virtual")
 public class VirtualDeviceAPI {
-	
-	// TODO: List all VirtualDevices with given VirtualDeviceType.
-	
 	/**
 	 * List all virtual device types.
 	 * @return Set<String>
