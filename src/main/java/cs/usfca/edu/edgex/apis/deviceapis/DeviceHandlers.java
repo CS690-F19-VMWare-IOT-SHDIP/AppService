@@ -5,10 +5,11 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import com.google.gson.Gson;
 
+import cs.usfca.edu.edgex.apis.flowapis.FlowHandlers;
 import cs.usfca.edu.edgex.device.Device;
 import cs.usfca.edu.edgex.device.DeviceType;
 import cs.usfca.edu.edgex.device.physicaldevices.PhysicalDevice;
@@ -18,7 +19,7 @@ import cs.usfca.edu.edgex.model.DeviceModel;
 
 public class DeviceHandlers {
 	private static Gson gson = new Gson();
-	private static Map<String, PhysicalDevice<?>> physicalDevices = new HashMap<String, PhysicalDevice<?>>();
+	private static ConcurrentHashMap<String, PhysicalDevice<?>> physicalDevices = new ConcurrentHashMap<String, PhysicalDevice<?>>();
 	
 	/**
 	 * Returns list of physical devices bind to a deviceId.
@@ -46,7 +47,6 @@ public class DeviceHandlers {
 		if(device.getDeviceType() != null) {
 			DeviceID deviceId = gson.fromJson(EdgeXClient.getDeviceID(device.getDeviceModel().getDeviceName()), DeviceID.class);
 			physicalDevices.put(deviceId.getDeviceID(), device);
-			System.out.println("DEVICE ID : " + deviceId.getDeviceID());
 			return deviceId.getDeviceID();
 		}
 		return null;
@@ -108,6 +108,11 @@ public class DeviceHandlers {
 		return new HashMap<String, PhysicalDevice<?>>(physicalDevices);
 	}
 	
+	/**
+	 * Returns the device id for physiscal device.
+	 * @param device
+	 * @return
+	 */
 	public static String getPhysicalDeviceID(PhysicalDevice<?> device) {
 		String ID = null;
 		for(Map.Entry<String, PhysicalDevice<?>> entry : getPhysicalDevices().entrySet()) {
@@ -117,6 +122,19 @@ public class DeviceHandlers {
 			}
 		}
 		return ID;
+	}
+	
+	/**
+	 * Removes device with provided deviceId.
+	 * @param deviceId
+	 * @return
+	 */
+	public static boolean removeDevice(String deviceId) {
+		PhysicalDevice<?> device = physicalDevices.get(deviceId);
+		if(device == null || FlowHandlers.isDeviceOccupied(device))
+			return false;
+		physicalDevices.remove(deviceId);
+		return true;
 	}
 	
 }

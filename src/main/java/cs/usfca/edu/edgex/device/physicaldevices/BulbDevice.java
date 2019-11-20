@@ -34,13 +34,11 @@ public class BulbDevice implements PhysicalDevice<Boolean> {
 	 * @return Boolean
 	 */
 	public Boolean get() {
-		System.out.println("Bulb is: " + value);
 		String deviceID = DeviceHandlers.getPhysicalDeviceID(this);
 		String responseData = EdgeXClient.get(this.bulb, deviceID);
 		DeviceEvent reading = new Gson().fromJson(responseData.toString(), DeviceEvent.class);
 		
 		this.value = (reading.getReadings().get(0).getValue() == "true") ? true : false;
-		System.out.println("Bulb is: " + value);
 
 		return value;
 	}
@@ -51,7 +49,6 @@ public class BulbDevice implements PhysicalDevice<Boolean> {
 	 * @param value
 	 */
 	public void set(Boolean value) {
-		System.out.println("Setting Bulb to: " + value);
 		String deviceID = DeviceHandlers.getPhysicalDeviceID(this);
 
 		String val = (value == true) ? "true" : "false";

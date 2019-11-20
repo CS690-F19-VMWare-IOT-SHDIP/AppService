@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,8 +22,6 @@ import cs.usfca.edu.edgex.model.ErrorModel;
 @Controller
 @RequestMapping("/device")
 public class DeviceAPI {
-	
-	// TODO: Add "Remove RandomModEvent" after flow/node APIs are complete.
 	
 	/**
 	 * Returns the list of all devices.
@@ -87,4 +86,16 @@ public class DeviceAPI {
 		return DeviceHandlers.listDeviceTypes();
 	}
 	
+	/**
+	 * Remove device with given device id.
+	 * @param String
+	 */
+	@DeleteMapping(value = "/{deviceId}")
+	@ResponseBody()
+	public ResponseEntity<?> removePhysicalDevice(@PathVariable(value = "deviceId") String deviceId) {
+		if(DeviceHandlers.removeDevice(deviceId)) {
+			return ResponseEntity.status(HttpStatus.OK).body("Deleted PhysicalDevice with DeviceId: " + deviceId);
+		}
+		return ResponseEntity.status(HttpStatus.OK).body("Device with DeviceId: " + deviceId + " does not exist");
+	}
 }

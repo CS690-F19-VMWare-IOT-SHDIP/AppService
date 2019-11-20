@@ -180,10 +180,8 @@ public class FlowHandlers {
 	 */
 	public static boolean isDeviceOccupied(Device<?> device) {
 		for(Entry<String, Flow> entry: allFlows.entrySet()) {
-			if(entry.getValue().isActive()) {
-				if(checkInNode(entry.getValue().getHead(), device)) {
-					return true;
-				}
+			if(checkInNode(entry.getValue().getHead(), device)) {
+				return true;
 			}
 		}
 		return false;
@@ -242,10 +240,8 @@ public class FlowHandlers {
 	 */
 	public static boolean isEventOccupied(Event event) {
 		for(Entry<String, Flow> entry: allFlows.entrySet()) {
-			if(entry.getValue().isActive()) {
-				if(checkInNode(entry.getValue().getHead(), event)) {
-					return true;
-				}
+			if(checkInNode(entry.getValue().getHead(), event)) {
+				return true;
 			}
 		}
 		return false;

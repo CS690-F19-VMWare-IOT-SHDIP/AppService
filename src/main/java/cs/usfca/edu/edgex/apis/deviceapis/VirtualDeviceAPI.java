@@ -6,6 +6,7 @@ import java.util.Set;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -70,5 +71,18 @@ public class VirtualDeviceAPI {
 			return ResponseEntity.status(HttpStatus.OK).body(device);
 		}
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorModel("No Device with DeviceId: " + deviceId + " Found!"));
+	}
+	
+	/**
+	 * Remove device with given device id.
+	 * @param String
+	 */
+	@DeleteMapping(value = "/{deviceId}")
+	@ResponseBody()
+	public ResponseEntity<?> removeVirtualDevice(@PathVariable(value = "deviceId") String deviceId) {
+		if(VirtualDeviceHandlers.removeDevice(deviceId)) {
+			return ResponseEntity.status(HttpStatus.OK).body("Deleted VirtualDevice with DeviceId: " + deviceId);
+		}
+		return ResponseEntity.status(HttpStatus.OK).body("Device with DeviceId: " + deviceId + " does not exist");
 	}
 }

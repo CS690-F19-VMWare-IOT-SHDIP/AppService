@@ -4,9 +4,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.reflections.Reflections;
 
+import cs.usfca.edu.edgex.apis.flowapis.FlowHandlers;
 import cs.usfca.edu.edgex.device.Device;
 import cs.usfca.edu.edgex.device.DeviceType;
 import cs.usfca.edu.edgex.device.VirtualRandomModDevice;
@@ -15,7 +17,7 @@ import cs.usfca.edu.edgex.model.RandomModInput;
 
 public class VirtualDeviceHandlers {
 
-	private static Map<String, Device<?>> virtualDevices = new HashMap<String, Device<?>>();
+	private static ConcurrentHashMap<String, Device<?>> virtualDevices = new ConcurrentHashMap<String, Device<?>>();
 	private static Map<String, Class<?>> virtualDeviceTypes;
 	
 	/**
@@ -99,5 +101,18 @@ public class VirtualDeviceHandlers {
 			}
 		}
 		return ID;
+	}
+	
+	/**
+	 * Removes device with provided deviceId.
+	 * @param deviceId
+	 * @return
+	 */
+	public static boolean removeDevice(String deviceId) {
+		Device<?> device = virtualDevices.get(deviceId);
+		if(device == null || FlowHandlers.isDeviceOccupied(device))
+			return false;
+		virtualDevices.remove(deviceId);
+		return true;
 	}
 }

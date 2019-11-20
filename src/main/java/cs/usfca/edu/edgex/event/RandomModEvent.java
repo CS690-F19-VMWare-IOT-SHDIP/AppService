@@ -32,7 +32,6 @@ public class RandomModEvent implements Event {
 	 */
 	public boolean isActive() {
 		boolean flag = (device.get() == 0);
-		System.out.println("** RandomModEvent is: " + flag);
 		return flag;
 	}
 	
@@ -42,7 +41,6 @@ public class RandomModEvent implements Event {
 	public void trigger() {
 		System.out.println("RandomModEvent doesn't support trigger!");
 	}
-	
 	
 	/**
 	 * Static method to identify DeviceType that

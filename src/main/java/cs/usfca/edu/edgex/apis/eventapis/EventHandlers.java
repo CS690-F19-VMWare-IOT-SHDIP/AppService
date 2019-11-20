@@ -9,11 +9,13 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.reflections.Reflections;
 
 import cs.usfca.edu.edgex.apis.deviceapis.DeviceHandlers;
 import cs.usfca.edu.edgex.apis.deviceapis.VirtualDeviceHandlers;
+import cs.usfca.edu.edgex.apis.flowapis.FlowHandlers;
 import cs.usfca.edu.edgex.device.Device;
 import cs.usfca.edu.edgex.device.DeviceType;
 import cs.usfca.edu.edgex.device.physicaldevices.PhysicalDevice;
@@ -21,7 +23,7 @@ import cs.usfca.edu.edgex.event.Event;
 
 public class EventHandlers {
 	private static Map<String, Class<?>> supportedEvents;
-	private static HashMap<String, Event> events = new HashMap<String, Event>();
+	private static ConcurrentHashMap<String, Event> events = new ConcurrentHashMap<String, Event>();
 	private static HashMap<String, ArrayList<Device<?>>> eventNameToDevices = new HashMap<String, ArrayList<Device<?>>>();
 	
 	/**
@@ -244,5 +246,18 @@ public class EventHandlers {
 	 */
 	public static Map<String, ArrayList<Device<?>>> getEventNameToDevices() {
 		return new HashMap<String, ArrayList<Device<?>>>(eventNameToDevices);
+	}
+	
+	/**
+	 * Removes device with provided deviceId.
+	 * @param deviceId
+	 * @return
+	 */
+	public static boolean removeDevice(String eventId) {
+		Event event = events.get(eventId);
+		if(event == null || FlowHandlers.isEventOccupied(event))
+			return false;
+		events.remove(eventId);
+		return true;
 	}
 }
