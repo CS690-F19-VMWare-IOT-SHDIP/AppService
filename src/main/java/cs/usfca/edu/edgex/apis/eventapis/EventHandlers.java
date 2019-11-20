@@ -124,7 +124,7 @@ public class EventHandlers {
 	public static String checkBindMap(Event eventToDevice) {
 		for(Map.Entry<String, Event> entry : events.entrySet()) {
 			
-			if((entry.getValue().equals(eventToDevice)) && (entry.getValue().getDevice().equals(eventToDevice.getDevice()) == true)) { 
+			if((entry.getValue().equals(eventToDevice))) { 
 				return entry.getKey();
 			}
 		}

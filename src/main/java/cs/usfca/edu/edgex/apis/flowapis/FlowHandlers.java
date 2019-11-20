@@ -8,22 +8,23 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import cs.usfca.edu.edgex.apis.eventapis.EventHandlers;
+import cs.usfca.edu.edgex.device.Device;
+import cs.usfca.edu.edgex.event.Event;
 import cs.usfca.edu.edgex.exceptions.EventNotFoundException;
+import cs.usfca.edu.edgex.exceptions.FlowNotFoundException;
 import cs.usfca.edu.edgex.model.FlowModel;
 import cs.usfca.edu.edgex.model.NodeModel;
-import cs.usfca.edu.edgex.utils.Constants;
 import cs.usfca.edu.edgex.utils.Flow;
 import cs.usfca.edu.edgex.utils.Node;
 
 public class FlowHandlers {
 	
-	private static ConcurrentHashMap<String, Flow> allFlows = new ConcurrentHashMap<String, Flow>();
-	/*
+	/**
 	 *  activeFlows stores the flow's status
 	 *  when a flow is created, it will be inactive by default and set to false
 	 *  only activate a flow when activateFlow API is called
 	 */
-	private static ConcurrentHashMap<String, Boolean> flowStatus = new ConcurrentHashMap<String, Boolean>();
+	private static ConcurrentHashMap<String, Flow> allFlows = new ConcurrentHashMap<String, Flow>();
 	private static FlowModel flowMod = null;
 	
 	/**
@@ -47,7 +48,6 @@ public class FlowHandlers {
 		}
 		Flow flow = new Flow(head, flowId);
 		allFlows.put(flowId, flow);
-		flowStatus.put(flowId, false);
 		flowMod = null;
 		return flowId;
 	}
@@ -94,11 +94,12 @@ public class FlowHandlers {
 	 * Only active flows are processed.
 	 * @param flowId
 	 * @return boolean
+	 * @throws FlowNotFoundException 
 	 */
-	public static boolean activateFlow(String flowId) {
-		if(flowStatus.replace(flowId, true) == null)
-			return false;
-		return true;
+	public static void activateFlow(String flowId) throws FlowNotFoundException {
+		if(allFlows.get(flowId) == null)
+			throw new FlowNotFoundException(flowId);
+		allFlows.get(flowId).activate();
 	}
 	
 	/**
@@ -106,24 +107,24 @@ public class FlowHandlers {
 	 * Inactive flows are still stored in database but just no longer processed.
 	 * @param flowId
 	 * @return boolean
+	 * @throws FlowNotFoundException 
 	 */
-	public static boolean deactivateFlow(String flowId) {
-		if(flowStatus.replace(flowId, false) == null)
-			return false;
-		return true;
+	public static void deactivateFlow(String flowId) throws FlowNotFoundException {
+		if(allFlows.get(flowId) == null)
+			throw new FlowNotFoundException(flowId);
+		allFlows.get(flowId).deActivate();
 	}
 	
 	/**
 	 * Removes a flow from the database.
 	 * @param flowId
 	 * @return String - success or error message
+	 * @throws FlowNotFoundException 
 	 */
-	public static String deleteFlow(String flowId) {
+	public static void deleteFlow(String flowId) throws FlowNotFoundException {
 		if(allFlows.remove(flowId) == null) {
-			return Constants.DOES_NOT_EXIST;
+			throw new FlowNotFoundException(flowId);
 		}
-		flowStatus.remove(flowId);
-		return Constants.SUCCESS;
 	}
 	
 	/**
@@ -135,22 +136,13 @@ public class FlowHandlers {
 	}
 	
 	/**
-	 * Returns status of all the flows that exist in database.
-	 * @return HashMap - <flowId, FlowStatus> 
-	 * FlowStatus is either True(active) or False(inactive)
-	 */
-	public static ConcurrentHashMap<String, Boolean> getFlowStatuses() {
-		return flowStatus;
-	}
-	
-	/**
 	 * Returns all the active flows that exist in database.
 	 * @return List - <Flow>
 	 */
 	public static ConcurrentLinkedQueue<Flow> getActiveFlows() {
 		ConcurrentLinkedQueue<Flow> result = new ConcurrentLinkedQueue<Flow>();
-		for(Entry<String, Boolean> entry: flowStatus.entrySet()) {
-			if(entry.getValue()) {
+		for(Entry<String, Flow> entry: allFlows.entrySet()) {
+			if(entry.getValue().isActive()) {
 				result.add(allFlows.get(entry.getKey()));
 			}
 		}
@@ -179,5 +171,83 @@ public class FlowHandlers {
 			result.add(key);
 		}
 		return result;
+	}
+	
+	/**
+	 * Check if the Device is occupied by any node.
+	 * @param device
+	 * @return boolean
+	 */
+	public static boolean isDeviceOccupied(Device<?> device) {
+		for(Entry<String, Flow> entry: allFlows.entrySet()) {
+			if(entry.getValue().isActive()) {
+				if(checkInNode(entry.getValue().getHead(), device)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Helper method to check if any node in flow 
+	 * contains provided device.
+	 * @param node
+	 * @param device
+	 * @return boolean
+	 */
+	private static boolean checkInNode(Node node, Device<?> device) {
+		if(node == null) {
+			return false;
+		}
+		for(Event event: node.getEvents()) {
+			if(event.getDevice().equals(device)) {
+				return true;
+			}
+		}
+		for(Node child: node.getChildren()) {
+			if(checkInNode(child, device)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Helper method to check if any node in flow 
+	 * contains provided device.
+	 * @param node
+	 * @param device
+	 * @return boolean
+	 */
+	private static boolean checkInNode(Node node, Event event) {
+		if(node == null) {
+			return false;
+		}
+		if(node.getEvents().contains(event)) {
+			return true;
+		}
+		for(Node child: node.getChildren()) {
+			if(checkInNode(child, event)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Check if the Event is occupied by any node.
+	 * @param event
+	 * @return boolean
+	 */
+	public static boolean isEventOccupied(Event event) {
+		for(Entry<String, Flow> entry: allFlows.entrySet()) {
+			if(entry.getValue().isActive()) {
+				if(checkInNode(entry.getValue().getHead(), event)) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 }

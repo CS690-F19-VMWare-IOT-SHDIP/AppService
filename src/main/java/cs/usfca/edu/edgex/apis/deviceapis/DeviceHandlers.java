@@ -44,7 +44,6 @@ public class DeviceHandlers {
 			return key;
 		}
 		if(device.getDeviceType() != null) {
-//			String deviceId = UUID.randomUUID().toString();
 			DeviceID deviceId = gson.fromJson(EdgeXClient.getDeviceID(device.getDeviceModel().getDeviceName()), DeviceID.class);
 			physicalDevices.put(deviceId.getDeviceID(), device);
 			System.out.println("DEVICE ID : " + deviceId.getDeviceID());

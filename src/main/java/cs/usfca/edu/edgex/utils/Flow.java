@@ -9,14 +9,51 @@ import cs.usfca.edu.edgex.apis.flowapis.FlowHandlers;
 public class Flow {
 	private String flowId;
 	private Node head;
+	private boolean status;
 	
 	public Flow(Node head, String flowId) {
 		this.head = head;
 		this.flowId = flowId;
+		this.status = false;
 	}
 	
+	/**
+	 * Returns flow Id of the flow.
+	 * @return String
+	 */
 	public String getFlowId() {
 		return this.flowId;
+	}
+	
+	/**
+	 * Returns the head node of the flow.
+	 * @return Node
+	 */
+	public Node getHead() {
+		return head;
+	}
+	
+	/**
+	 * Returns true if the flow is active and returns false if
+	 * the flow is inactive.
+	 * @return boolean
+	 */
+	public boolean isActive() {
+		return status;
+	}
+	
+	/**
+	 * This method is used to activate a flow.
+	 */
+	public void activate() {
+		this.status = true;
+	}
+	
+	/**
+	 * This method is used to deActivate a flow.
+	 */
+	public void deActivate() {
+		this.status = false;
 	}
 	
 	/**
@@ -26,10 +63,6 @@ public class Flow {
 	 * @throws InterruptedException
 	 */
 	public boolean executeFlow() throws InterruptedException {
-//		while(!head.checkAllEvents()) {
-//			System.out.println("Waiting for flow to execute!");
-//			Thread.sleep(3000);
-//		}
 		if(head.checkAllEvents()) {
 			System.out.println("Executing flow with flowId: " + flowId.substring(5));
 			boolean flag = true;

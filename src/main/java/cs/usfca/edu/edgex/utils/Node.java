@@ -21,6 +21,22 @@ public class Node {
 	}
 	
 	/**
+	 * Returns node id of the node.
+	 * @return String
+	 */
+	public String getNodeId() {
+		return nodeId;
+	}
+	
+	/**
+	 * Returns list of events present in the node.
+	 * @return List<Event>
+	 */
+	public List<Event> getEvents() {
+		return events;
+	}
+	
+	/**
 	 * Add event to given node.
 	 * @param event
 	 */

@@ -95,7 +95,6 @@ public class BulbDevice implements PhysicalDevice<Boolean> {
 	public boolean equals(Device<?> device) {
 		if(device.getDevice() instanceof DeviceModel) {
 			DeviceModel received = (DeviceModel) device.getDevice();
-			System.out.println("Casted device to DeviceModel");
 			if(received.getDeviceName().equals(bulb.getDeviceName()) && received.getDeviceType() == bulb.getDeviceType() 
 					&& received.getResourceName().equals(bulb.getResourceName())) {
 				return true;

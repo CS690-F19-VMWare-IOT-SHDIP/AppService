@@ -13,9 +13,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.server.ResponseStatusException;
 
 import cs.usfca.edu.edgex.exceptions.EventNotFoundException;
+import cs.usfca.edu.edgex.exceptions.FlowNotFoundException;
 import cs.usfca.edu.edgex.model.FlowIdModel;
 import cs.usfca.edu.edgex.model.FlowModel;
-import cs.usfca.edu.edgex.utils.Constants;
 
 @Controller
 @RequestMapping("/flow")
@@ -38,32 +38,34 @@ public class FlowAPIs {
 	@PostMapping(value = "/activate", consumes = "application/json")
 	@ResponseBody()
 	public ResponseEntity<?> activateFlow(@RequestBody FlowIdModel flowIdModel) {
-	
-		boolean resp = FlowHandlers.activateFlow(flowIdModel.getFlowId());
-		if(resp) {
+		try {
+			FlowHandlers.activateFlow(flowIdModel.getFlowId());
 			return ResponseEntity.status(HttpStatus.OK).body("flow " + flowIdModel.getFlowId() + " activated successfully");
+		} catch (FlowNotFoundException e) {
+			return ResponseEntity.status(HttpStatus.OK).body("flow " + flowIdModel.getFlowId() + " does not exist in our database");
 		}
-		return ResponseEntity.status(HttpStatus.OK).body("flow " + flowIdModel.getFlowId() + " does not exist in our database");
 	}
 	
 	@PostMapping(value = "/deactivate", consumes = "application/json")
 	@ResponseBody()
-	public ResponseEntity<?> deactivateFlow(@RequestBody FlowIdModel flowIdModel) {
-		boolean resp = FlowHandlers.deactivateFlow(flowIdModel.getFlowId());
-		if(resp) {
+	public ResponseEntity<?> deactivateFlow(@RequestBody FlowIdModel flowIdModel) throws FlowNotFoundException {
+		try {
+			FlowHandlers.deactivateFlow(flowIdModel.getFlowId());
 			return ResponseEntity.status(HttpStatus.OK).body("flow " + flowIdModel.getFlowId() + " deactivated successfully");
+		} catch (FlowNotFoundException e) {
+			return ResponseEntity.status(HttpStatus.OK).body("flow " + flowIdModel.getFlowId() + " does not exist in our database");
 		}
-		return ResponseEntity.status(HttpStatus.OK).body("flow " + flowIdModel.getFlowId() + " does not exist in our database");
 	}
 	
 	@PostMapping(value = "/delete", consumes = "application/json")
 	@ResponseBody()
 	public ResponseEntity<?> deleteFlow(@RequestBody FlowIdModel flowIdModel) {
-		String resp = FlowHandlers.deleteFlow(flowIdModel.getFlowId());
-		if(resp.equals(Constants.DOES_NOT_EXIST)) {
+		try {
+			FlowHandlers.deleteFlow(flowIdModel.getFlowId());
+			return ResponseEntity.status(HttpStatus.OK).body("flow " + flowIdModel.getFlowId() + " deleted successfully");
+		} catch (FlowNotFoundException e) {
 			return ResponseEntity.status(HttpStatus.OK).body("flow " + flowIdModel.getFlowId() + " does not exist in our database");
 		}
-		return ResponseEntity.status(HttpStatus.OK).body("flow " + flowIdModel.getFlowId() + " deleted successfully");
 	}
 	
 	@GetMapping(value = "/listAllFlowIds")

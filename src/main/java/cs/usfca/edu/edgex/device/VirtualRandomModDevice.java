@@ -61,7 +61,6 @@ public class VirtualRandomModDevice implements Device<Integer> {
 	public boolean equals(Device<?> device) {
 		if(device.getDevice() instanceof RandomModInput) {
 			RandomModInput received = (RandomModInput) device.getDevice();
-			System.out.println("Casted deviceInput to RandomModInput");
 			if(received.getDeviceName().equals(input.getDeviceName()) && received.getVal() == input.getVal()) {
 				return true;
 			}

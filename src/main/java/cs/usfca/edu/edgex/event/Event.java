@@ -5,7 +5,7 @@ import cs.usfca.edu.edgex.device.Device;
 /**
  * Interface to support different type of Events.
  */
-public interface Event{
+public interface Event {
 	
 	/**
 	 * Checks if the current event is active
@@ -19,6 +19,10 @@ public interface Event{
 	 */
 	public void trigger();
 	
+	/**
+	 * Returns the bind to current event.
+	 * @return
+	 */
 	public Device<?> getDevice();
 	
 	/**

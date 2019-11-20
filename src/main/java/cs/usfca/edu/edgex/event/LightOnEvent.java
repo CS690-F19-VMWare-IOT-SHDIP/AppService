@@ -60,7 +60,8 @@ public class LightOnEvent implements Event {
 	
 	@Override
 	public boolean equals(Event event) {
-		return (this.getClass().getSimpleName().equals(event.getClass().getSimpleName()));
+		return (this.getClass().getSimpleName().equals(event.getClass().getSimpleName()) 
+				&& this.bulb.equals(event.getDevice()));
 	}
 
 }
