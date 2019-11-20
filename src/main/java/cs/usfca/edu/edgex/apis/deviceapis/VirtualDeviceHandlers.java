@@ -1,6 +1,7 @@
 package cs.usfca.edu.edgex.apis.deviceapis;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
@@ -10,7 +11,6 @@ import org.reflections.Reflections;
 
 import cs.usfca.edu.edgex.apis.flowapis.FlowHandlers;
 import cs.usfca.edu.edgex.device.Device;
-import cs.usfca.edu.edgex.device.DeviceType;
 import cs.usfca.edu.edgex.device.VirtualRandomModDevice;
 import cs.usfca.edu.edgex.device.physicaldevices.PhysicalDevice;
 import cs.usfca.edu.edgex.model.RandomModInput;
@@ -18,7 +18,7 @@ import cs.usfca.edu.edgex.model.RandomModInput;
 public class VirtualDeviceHandlers {
 
 	private static ConcurrentHashMap<String, Device<?>> virtualDevices = new ConcurrentHashMap<String, Device<?>>();
-	private static Map<String, Class<?>> virtualDeviceTypes;
+	private static ConcurrentHashMap<String, Class<?>> virtualDeviceTypes;
 	
 	/**
 	 * Returns list of supported virtual types.
@@ -26,7 +26,7 @@ public class VirtualDeviceHandlers {
 	 */
 	public static Set<String> listVirtualDeviceTypes() {
 		if(virtualDeviceTypes == null) {
-			virtualDeviceTypes = new HashMap<String, Class<?>>();
+			virtualDeviceTypes = new ConcurrentHashMap<String, Class<?>>();
 			Reflections reflections = new Reflections("cs.usfca.edu.edgex");    
 	    	Set<Class<? extends Device>> virtual = reflections.getSubTypesOf(Device.class);
 	    	Set<Class<? extends PhysicalDevice>> physical = reflections.getSubTypesOf(PhysicalDevice.class);
@@ -36,6 +36,22 @@ public class VirtualDeviceHandlers {
 	    	}
 		}
 		return virtualDeviceTypes.keySet();
+	}
+	
+	/**
+	 * Returns list of virtual devices with given device type.
+	 * @param deviceType
+	 * @return Set<Device<?>>
+	 */
+	public static Set<Device<?>> listVirtualDeviceWithType(String deviceType) {
+		Set<Device<?>> devices = new HashSet<>();
+		for(String device : virtualDevices.keySet()) {
+			Device<?> virtualDevice = virtualDevices.get(device);
+			if(virtualDevice.getClass().getSimpleName().equals(deviceType)) {
+				devices.add(virtualDevice);
+			}
+		}
+		return devices;
 	}
 	
 	/**

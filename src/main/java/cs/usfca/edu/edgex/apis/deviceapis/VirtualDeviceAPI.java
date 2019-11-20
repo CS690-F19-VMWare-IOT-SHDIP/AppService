@@ -23,7 +23,6 @@ import cs.usfca.edu.edgex.model.RandomModInput;
 @RequestMapping("/virtual")
 public class VirtualDeviceAPI {
 	
-	// TODO: Add "Remove RandomModDevice" after flow/node APIs are complete.
 	// TODO: List all VirtualDevices with given VirtualDeviceType.
 	
 	/**
@@ -44,7 +43,6 @@ public class VirtualDeviceAPI {
 	@PostMapping(value = "/register/VirtualRandomModDevice", consumes = "application/json")
 	@ResponseBody()
 	public DeviceIdModel addRandomModEvent(@RequestBody RandomModInput input) {
-		// TODO : spring bug check, incorrect object passed by user
 		return new DeviceIdModel(VirtualDeviceHandlers.addRandomModDevice(input));
 	}
 	
@@ -84,5 +82,15 @@ public class VirtualDeviceAPI {
 			return ResponseEntity.status(HttpStatus.OK).body("Deleted VirtualDevice with DeviceId: " + deviceId);
 		}
 		return ResponseEntity.status(HttpStatus.OK).body("Device with DeviceId: " + deviceId + " does not exist");
+	}
+	
+	/**
+	 * List all virtual devices with provided device type.
+	 * @return Set<Device<?>>
+	 */
+	@GetMapping(value = "/list/type/{deviceType}")
+	@ResponseBody()
+	public Set<Device<?>> listAllVirtualDevicesWithType(@PathVariable(value = "deviceType") String deviceType) {
+		return VirtualDeviceHandlers.listVirtualDeviceWithType(deviceType);
 	}
 }
