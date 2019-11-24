@@ -71,11 +71,20 @@ public class VirtualDeviceHandlers {
 	}
 	
 	/**
+	 * Adds a virtual device to the virtual device map.
+	 * @param deviceId
+	 * @param device
+	 */
+	public static void addVirtualDeviceToMap(String deviceId, Device<?> device) {
+		virtualDevices.put(deviceId, device);
+	}
+	
+	/**
 	 * Returns key for a given device value.
 	 * @param device
 	 * @return String
 	 */
-	private static String getKeyForValue(Device<?> device) {
+	public static String getKeyForValue(Device<?> device) {
 		for(String i : virtualDevices.keySet()) {
 			if(virtualDevices.get(i).equals(device))
 				return i;

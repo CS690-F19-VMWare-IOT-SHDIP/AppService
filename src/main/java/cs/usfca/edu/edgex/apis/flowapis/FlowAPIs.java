@@ -16,6 +16,7 @@ import cs.usfca.edu.edgex.exceptions.EventNotFoundException;
 import cs.usfca.edu.edgex.exceptions.FlowNotFoundException;
 import cs.usfca.edu.edgex.model.FlowIdModel;
 import cs.usfca.edu.edgex.model.FlowModel;
+import cs.usfca.edu.edgex.utils.ApiInputMode;
 
 @Controller
 @RequestMapping("/flow")
@@ -25,12 +26,12 @@ public class FlowAPIs {
 	@ResponseBody()
 	public ResponseEntity<?> registerFlow(@RequestBody FlowModel flowModel) {
 		try {
-			String resp = FlowHandlers.addFlow(flowModel);
+			String resp = FlowHandlers.addFlow(flowModel, ApiInputMode.IndividualAPI);
 			FlowIdModel fidM = new FlowIdModel();
 			fidM.setFlowId(resp);
 			return ResponseEntity.status(HttpStatus.OK).body(fidM);
 		}
-		catch(EventNotFoundException ef) {
+		catch(EventNotFoundException | FlowNotFoundException ef) {
 	        throw new ResponseStatusException(HttpStatus.NOT_FOUND, ef.getMessage(), null);
 		}
 	}

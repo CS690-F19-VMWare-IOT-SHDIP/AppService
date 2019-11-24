@@ -1,7 +1,7 @@
 package cs.usfca.edu.edgex.utils;
 
 public class URLPaths {
-	public static String HOSTANME = "http://ubuntu@10.50.66.97";
+	public static String HOSTANME = "http://ubuntu@192.168.137.60";
 	
 	public static String DEVICE_SERVICE_PORT = "49992";
 	public static String COMMAND_SERVICE_PORT = "48082";

@@ -2,6 +2,7 @@ package cs.usfca.edu.edgex.device;
 
 import java.util.Random;
 
+import cs.usfca.edu.edgex.model.Model;
 import cs.usfca.edu.edgex.model.RandomModInput;
 /**
  * Defines virtual random mod device
@@ -15,11 +16,14 @@ public class VirtualRandomModDevice implements Device<Integer> {
 	 * Constructor for creating VirtualRandomModDevice.
 	 * @param input
 	 */
-	public VirtualRandomModDevice(RandomModInput input) {
-		if(input.getVal() == 0)
-			throw new ArithmeticException("Divide by 0");
-		this.input = input;
-		this.random = new Random();
+	public VirtualRandomModDevice(Model input) {
+		if(input instanceof RandomModInput) {
+			this.input = (RandomModInput)input;
+			this.random = new Random();
+		}
+		else {
+			System.out.print("Wrong type passed in to VirtualRandomModDevice");
+		}
 	}
 	
 	/**

@@ -1,6 +1,6 @@
 package cs.usfca.edu.edgex.model;
 
-public class RandomModInput {
+public class RandomModInput extends Model {
 	private int val;
 	private String deviceName;
 
