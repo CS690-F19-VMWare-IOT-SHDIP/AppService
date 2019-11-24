@@ -7,6 +7,7 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import cs.usfca.edu.edgex.aggregateapis.InputModelHandlers;
 import cs.usfca.edu.edgex.apis.eventapis.EventHandlers;
 import cs.usfca.edu.edgex.device.Device;
 import cs.usfca.edu.edgex.event.Event;
@@ -14,6 +15,7 @@ import cs.usfca.edu.edgex.exceptions.EventNotFoundException;
 import cs.usfca.edu.edgex.exceptions.FlowNotFoundException;
 import cs.usfca.edu.edgex.model.FlowModel;
 import cs.usfca.edu.edgex.model.NodeModel;
+import cs.usfca.edu.edgex.utils.ApiInputMode;
 import cs.usfca.edu.edgex.utils.Flow;
 import cs.usfca.edu.edgex.utils.Node;
 
@@ -35,12 +37,14 @@ public class FlowHandlers {
 	 * @return flowId
 	 * @throws EventNotFoundException
 	 */
-	public static String addFlow(FlowModel flowModel) throws EventNotFoundException {
+	public static String addFlow(FlowModel flowModel, ApiInputMode inputMode) 
+			throws EventNotFoundException, FlowNotFoundException {
 		Node head = new Node(null);
 		flowMod = flowModel;
-		head = addEventsToNode(flowModel.getHead(), head);
+		head = addEventsToNode(flowModel.getHead(), head, inputMode);
+		head.setNodeId(flowModel.getHead().nodeId);
 		for(String childNodeId: flowModel.getHead().childNodeIds) {
-			addChildren(head, childNodeId);
+			addChildren(head, childNodeId, inputMode);
 		}
 		String flowId = UUID.randomUUID().toString();
 		while(allFlows.containsKey(flowId)) {
@@ -48,20 +52,33 @@ public class FlowHandlers {
 		}
 		Flow flow = new Flow(head, flowId);
 		allFlows.put(flowId, flow);
+		if(inputMode == ApiInputMode.AggregateAPI) {
+			activateFlow(flow.getFlowId());
+		}
 		flowMod = null;
 		return flowId;
 	}
 	
-	private static Node addEventsToNode(NodeModel nodeModel, Node node) throws EventNotFoundException{
-		for(String eventId: nodeModel.eventIds) {
-			if(!EventHandlers.getEvents().containsKey(eventId))
-				throw new EventNotFoundException(eventId);
-			node.addEvent(EventHandlers.getEvents().get(eventId));
+	private static Node addEventsToNode(NodeModel nodeModel, Node node, ApiInputMode inputMode) throws EventNotFoundException{
+		if(inputMode == ApiInputMode.IndividualAPI) {
+			for(String eventId: nodeModel.eventIds) {
+				if(!EventHandlers.getEvents().containsKey(eventId))
+					throw new EventNotFoundException(eventId);
+				node.addEvent(EventHandlers.getEvents().get(eventId));
+			}
+		}
+		else if(inputMode == ApiInputMode.AggregateAPI) {
+			for(String eventIndex: nodeModel.eventIds) {
+				String eventId = InputModelHandlers.getEventIDs().get(Integer.parseInt(eventIndex));
+				if(!EventHandlers.getEvents().containsKey(eventId))
+					throw new EventNotFoundException(eventId);
+				node.addEvent(EventHandlers.getEvents().get(eventId));
+			}
 		}
 		return node;
 	}
 	
-	private static Node addChildren(Node node, String childNodeId) throws EventNotFoundException {
+	private static Node addChildren(Node node, String childNodeId, ApiInputMode inputMode) throws EventNotFoundException {
 		NodeModel nm = findChildFromInput(flowMod, childNodeId);
 		if(nm == null) {
 			System.out.println("addChildren() terminating at node: " + childNodeId + ". No further child nodes exist" );
@@ -69,13 +86,13 @@ public class FlowHandlers {
 		}
 		Node child = new Node(nm.nodeId);
 		if(nm.childNodeIds.size() == 0) {
-			child = addEventsToNode(nm, child);
+			child = addEventsToNode(nm, child, inputMode);
 			node.addChildren(child);
 			return node;
 		}
-		child = addEventsToNode(nm, child);	
+		child = addEventsToNode(nm, child, inputMode);	
 		for(String childNode: nm.childNodeIds) {
-			addChildren(child, childNode);
+			addChildren(child, childNode, inputMode);
 		}
 		node.addChildren(child);
 		return node;

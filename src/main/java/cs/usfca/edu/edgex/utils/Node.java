@@ -29,6 +29,14 @@ public class Node {
 	}
 	
 	/**
+	 * Sets node id of the node.
+	 * @return String
+	 */
+	public void setNodeId(String nodeId) {
+		this.nodeId = nodeId;
+	}
+	
+	/**
 	 * Returns list of events present in the node.
 	 * @return List<Event>
 	 */

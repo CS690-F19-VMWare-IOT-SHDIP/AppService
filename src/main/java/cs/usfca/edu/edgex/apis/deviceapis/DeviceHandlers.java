@@ -52,12 +52,16 @@ public class DeviceHandlers {
 		return null;
 	}
 	
+	public static void addPhysicalDevice(String deviceId, PhysicalDevice<?> device) {
+		physicalDevices.put(deviceId, device);
+	}
+	
 	/**
 	 * Returns key for given device.
 	 * @param device
 	 * @return String
 	 */
-	private static String getKeyForValue(Device<?> device) {
+	public static String getKeyForValue(Device<?> device) {
 		for(String i : physicalDevices.keySet()) {
 			if(physicalDevices.get(i).equals(device))
 				return i;
