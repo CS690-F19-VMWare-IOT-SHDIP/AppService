@@ -13,5 +13,7 @@ public class URLPaths {
 	public static String GET_EVENT_DEVICE = CORE_DATA_PORT + "/api/v1/event/device/{}/1";
 	public static String PUT_READING = CORE_DATA_PORT + "/api/v1/event";
 	public static String GET_DEVICE_META = METADATA + "/api/v1/device/name/{deviceName}";
-
+	
+	public static String GET_OLDEST_SLACK_MSG = "https://slack.com/api/conversations.history?"
+			+ "token=YOUR_TOKEN_HERE&channel=CONVERSATION_ID_HERE&oldest=OLDEST_TIMESTAMP_HERE&limit=1";
 }

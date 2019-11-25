@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cs.usfca.edu.edgex.device.Device;
+import cs.usfca.edu.edgex.exceptions.InvalidInputException;
 import cs.usfca.edu.edgex.model.DeviceIdModel;
 import cs.usfca.edu.edgex.model.ErrorModel;
 import cs.usfca.edu.edgex.model.RandomModInput;
@@ -36,10 +37,11 @@ public class VirtualDeviceAPI {
 	 * Register virtualRandomModDevice.
 	 * @param input
 	 * @return DeviceIdModel
+	 * @throws InvalidInputException 
 	 */
 	@PostMapping(value = "/register/VirtualRandomModDevice", consumes = "application/json")
 	@ResponseBody()
-	public DeviceIdModel addRandomModEvent(@RequestBody RandomModInput input) {
+	public DeviceIdModel addRandomModEvent(@RequestBody RandomModInput input) throws InvalidInputException {
 		return new DeviceIdModel(VirtualDeviceHandlers.addRandomModDevice(input));
 	}
 	

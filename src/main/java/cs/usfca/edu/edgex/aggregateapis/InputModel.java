@@ -19,8 +19,8 @@ public class InputModel {
 	/*
 	 * DeviceType of every device
 	 * Each device in the "devices" list above should have a corresponding deviceType here
-	 * Device Type entered should have a similar name as the actual device in this code
-	 * E.g bulb device type should have a name containing "Bulb"
+	 * Device Type entered should be a prefix of the actual device class name in this code
+	 * E.g bulb device type should have a name containing "Bulb", because bulb class is named "BulbDevice"
 	 */
 	public List<String> deviceType;
 	/*

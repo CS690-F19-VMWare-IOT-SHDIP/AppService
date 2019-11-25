@@ -34,6 +34,22 @@ public class Request {
 		return con;
 	}
 	
+	public HttpURLConnection connect(URL url, String requestMethod, String contentType, String authorization) {
+		HttpURLConnection con = null;
+		try {
+			con = (HttpURLConnection) url.openConnection();
+			con.setRequestMethod(requestMethod);
+			if(contentType != null && !contentType.isEmpty())
+				con.setRequestProperty("Content-Type", contentType);
+			if(authorization != null && !authorization.isEmpty())
+				con.setRequestProperty("Authorization", authorization);
+		} 
+		catch (IOException e) {
+//			e.printStackTrace();
+		}
+		return con;
+	}
+	
 	public String getResponse(HttpURLConnection con) {
 		try {
 			int responseCode = con.getResponseCode();

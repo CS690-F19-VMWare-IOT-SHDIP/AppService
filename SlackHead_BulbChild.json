@@ -1,0 +1,19 @@
+{
+	"devices": "{\"channel\" : \"PUT_SLACK_CHANNEL_ID_HERE\", \"token\" : \"PUT_SLACK_TOKEN_HERE\", \"command\" : \"BULB_ON\"} | {\"deviceName\" : \"Simple-Device-01\", \"command\" : \"SwitchButton\", \"resourceName\" : \"SwitchButton\", \"deviceType\" : \"BULB\"}",
+	"deviceType": ["Slack", "Bulb"],
+	"events": ["SlackEvent", "LightOnEvent"],
+	"flow": {
+		"head": {
+			"nodeId": "xyz2",
+			"eventIds": ["0"],
+			"childNodeIds": ["abc2"]
+		},
+		"children": [{
+				"nodeId": "abc2",
+				"eventIds": ["1"],
+				"childNodeIds": []
+			}
+
+		]
+	}
+}

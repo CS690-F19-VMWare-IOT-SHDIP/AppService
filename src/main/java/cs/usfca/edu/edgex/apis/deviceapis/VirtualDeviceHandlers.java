@@ -13,6 +13,7 @@ import cs.usfca.edu.edgex.apis.flowapis.FlowHandlers;
 import cs.usfca.edu.edgex.device.Device;
 import cs.usfca.edu.edgex.device.VirtualRandomModDevice;
 import cs.usfca.edu.edgex.device.physicaldevices.PhysicalDevice;
+import cs.usfca.edu.edgex.exceptions.InvalidInputException;
 import cs.usfca.edu.edgex.model.RandomModInput;
 
 public class VirtualDeviceHandlers {
@@ -58,8 +59,9 @@ public class VirtualDeviceHandlers {
 	 * Adds new random mod virtual device.
 	 * @param input
 	 * @return String
+	 * @throws InvalidInputException 
 	 */
-	public static String addRandomModDevice(RandomModInput input) {
+	public static String addRandomModDevice(RandomModInput input) throws InvalidInputException {
 		VirtualRandomModDevice randomModDevice = new VirtualRandomModDevice(input);
 		String key = getKeyForValue(randomModDevice);
 		if(key != null) {
