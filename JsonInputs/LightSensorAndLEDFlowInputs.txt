@@ -1,0 +1,43 @@
+// IsDark -> LightOn Flow
+
+{
+	"devices": "{\"deviceName\" : \"LightSensor-Device-01\", \"command\" : \"LightSensorData\", \"resourceName\" : \"lightsensor\", \"deviceType\" : \"LDR\"} | {\"deviceName\" : \"Led-Device-01\", \"command\" : \"SwitchLed\", \"resourceName\" : \"led\", \"deviceType\" : \"BULB\"}",
+	"deviceType": ["LightSensor", "Bulb"],
+	"events": ["IsDark", "LightOnEvent"],
+	"flow": {
+		"head": {
+			"nodeId": "xyz",
+			"eventIds": ["0"],
+			"childNodeIds": ["abc"]
+		},
+		"children": [{
+				"nodeId": "abc",
+				"eventIds": ["1"],
+				"childNodeIds": []
+			}
+
+		]
+	}
+}
+
+// IsBright -> LightOff Flow
+
+{
+	"devices": "{\"deviceName\" : \"LightSensor-Device-01\", \"command\" : \"LightSensorData\", \"resourceName\" : \"lightsensor\", \"deviceType\" : \"LDR\"} | {\"deviceName\" : \"Led-Device-01\", \"command\" : \"SwitchLed\", \"resourceName\" : \"led\", \"deviceType\" : \"BULB\"}",
+	"deviceType": ["LightSensor", "Bulb"],
+	"events": ["IsBright", "LightOffEvent"],
+	"flow": {
+		"head": {
+			"nodeId": "xyz",
+			"eventIds": ["0"],
+			"childNodeIds": ["abc"]
+		},
+		"children": [{
+				"nodeId": "abc",
+				"eventIds": ["1"],
+				"childNodeIds": []
+			}
+
+		]
+	}
+}

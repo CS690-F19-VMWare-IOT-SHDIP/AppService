@@ -21,7 +21,8 @@ public class EdgeXClient {
 			DeviceEvent dEvent = new Gson().fromJson(response.toString(), DeviceEvent.class);
 			System.out.println("Data : " + dEvent.getDeviceName() + " : " + dEvent.getReadings().get(0).getResourceName() + " : " + dEvent.getReadings().get(0).getValue());
 			return response;
-		} 
+		}
+		con.disconnect();
 		return null;
 	}
 	
@@ -39,7 +40,7 @@ public class EdgeXClient {
 			String response = request.getResponse(con);
 			System.out.println("PUT RESPONSE : " + response);
 		}
-		
+		con.disconnect();
 		return "";
 	}
 	
@@ -49,13 +50,8 @@ public class EdgeXClient {
 		System.out.println(url);
 		HttpURLConnection con = request.connect(url, "GET");
 		String response = request.getResponse(con);
+		con.disconnect();
 		return response;
 	}
-	
-
-	
-
-	
-	
 
 }

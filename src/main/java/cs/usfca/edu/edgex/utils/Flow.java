@@ -1,6 +1,5 @@
 package cs.usfca.edu.edgex.utils;
 
-import cs.usfca.edu.edgex.apis.flowapis.FlowHandlers;
 
 /**
  * The Flow class represents the workflow of the events.

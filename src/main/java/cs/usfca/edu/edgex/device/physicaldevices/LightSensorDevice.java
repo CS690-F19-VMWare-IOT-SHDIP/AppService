@@ -10,6 +10,7 @@ import cs.usfca.edu.edgex.device.DeviceType;
 import cs.usfca.edu.edgex.edgexclient.DeviceEvent;
 import cs.usfca.edu.edgex.edgexclient.EdgeXClient;
 import cs.usfca.edu.edgex.model.DeviceModel;
+import cs.usfca.edu.edgex.model.LightSensorModel;
 
 public class LightSensorDevice implements PhysicalDevice<Integer> {
 	
@@ -17,8 +18,10 @@ public class LightSensorDevice implements PhysicalDevice<Integer> {
 	private int value;
 	
 	public LightSensorDevice(DeviceModel ledSensor) {
-		this.ledSensor = ledSensor;
-		this.value = 0;
+		if(ledSensor instanceof LightSensorModel) {
+			this.ledSensor = ledSensor;
+			this.value = 0;
+		}
 	}
 
 	@Override
@@ -26,7 +29,7 @@ public class LightSensorDevice implements PhysicalDevice<Integer> {
 		String deviceID = DeviceHandlers.getPhysicalDeviceID(this);
 		String responseData = EdgeXClient.get(this.ledSensor, deviceID);
 		DeviceEvent reading = new Gson().fromJson(responseData.toString(), DeviceEvent.class);
-		this.value = reading.getReadings().get(0).getValue() == "1" ? 1 : 0;
+		this.value = reading.getReadings().get(0).getValue().equals("1") ? 1 : 0;
 		return value;
 	}
 
