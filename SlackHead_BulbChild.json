@@ -1,7 +1,7 @@
 {
-	"devices": "{\"channel\" : \"PUT_SLACK_CHANNEL_ID_HERE\", \"token\" : \"PUT_SLACK_TOKEN_HERE\", \"command\" : \"BULB_ON\"} | {\"deviceName\" : \"Simple-Device-01\", \"command\" : \"SwitchButton\", \"resourceName\" : \"SwitchButton\", \"deviceType\" : \"BULB\"}",
-	"deviceType": ["Slack", "Bulb"],
-	"events": ["SlackEvent", "LightOnEvent"],
+	"devices": "{\"deviceName\" : \"LightSensor-Device-01\", \"command\" : \"LightSensorData\", \"resourceName\" : \"lightsensor\", \"deviceType\" : \"LDR\"} | {\"deviceName\" : \"Led-Device-01\", \"command\" : \"SwitchLed\", \"resourceName\" : \"led\", \"deviceType\" : \"BULB\"}",
+	"deviceType": ["LDR", "BULB"],
+	"events": ["IsDark", "LightOnEvent"],
 	"flow": {
 		"head": {
 			"nodeId": "xyz2",
