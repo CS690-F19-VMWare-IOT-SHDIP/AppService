@@ -4,5 +4,6 @@ public enum DeviceType {
 	VIRTUAL,
 	BULB,
 	LED,
+	LDR,
 	UNKNOWN;
 }
