@@ -35,7 +35,7 @@ public class LEDOnEvent implements Event {
 	 * Triggers an event to switch ON the LED.
 	 */
 	public void trigger() {
-		if(!led.get()) {
+		if(led.get() == null || !led.get()) {
 			led.set(true); // Triggers LED on.
 		}
 	}

@@ -108,6 +108,7 @@ public class InputModelHandlers {
 		    					Device<?> virtualDevice = (Device<?>) cons.newInstance(virtualModel);
 		    					deviceId = registerVirtualDevice(virtualDevice);
 		    					deviceCreatedSuccessfully = true;
+		    					break;
 		    				}
 		    			}
 		    		}
@@ -124,6 +125,7 @@ public class InputModelHandlers {
 		    					PhysicalDevice<?> device = (PhysicalDevice<?>) cons.newInstance(physicalModel);
 				    			deviceId = registerPhysicalDevice(device);
 				    			deviceCreatedSuccessfully = true;
+				    			break;
 		    				}
 		    			}
 		    		}

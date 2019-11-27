@@ -2,10 +2,20 @@ package cs.usfca.edu.edgex.model;
 
 import com.google.gson.Gson;
 
-public class LedDeviceInputModel extends Model {
+public class LedDeviceInputModel extends DeviceModel {
 	private int pin;
 	private boolean state;
-	private Gson gson;
+	private transient Gson gson;
+	
+	private class State {
+		private int addr;
+		private boolean state;
+
+		public State(int addr, boolean state) {
+			this.addr = addr;
+		    this.state = state;
+		}
+	}
 	
 	public LedDeviceInputModel() {
 		this.gson = new Gson();
@@ -26,6 +36,6 @@ public class LedDeviceInputModel extends Model {
 	
 	@Override
 	public String toString() {
-		return gson.toJson(this);
+		return gson.toJson(new State(this.pin, this.state));
 	}
 }
