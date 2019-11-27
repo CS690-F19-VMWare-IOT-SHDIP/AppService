@@ -15,6 +15,7 @@ import cs.usfca.edu.edgex.device.DeviceType;
 import cs.usfca.edu.edgex.device.physicaldevices.PhysicalDevice;
 import cs.usfca.edu.edgex.edgexclient.DeviceID;
 import cs.usfca.edu.edgex.edgexclient.EdgeXClient;
+import cs.usfca.edu.edgex.exceptions.InvalidInputException;
 import cs.usfca.edu.edgex.model.DeviceModel;
 
 public class DeviceHandlers {
@@ -37,8 +38,9 @@ public class DeviceHandlers {
 	 * Registers new physical device and returns deviceId.
 	 * @param deviceModel
 	 * @return String
+	 * @throws InvalidInputException 
 	 */
-	public static String registerPhysicalDevice(DeviceModel deviceModel) {
+	public static String registerPhysicalDevice(DeviceModel deviceModel) throws InvalidInputException {
 		PhysicalDevice<?> device = DeviceTypeToDeviceMap.getPhysicalDevice(deviceModel);
 		String key = getKeyForValue(device);
 		if(key != null) {

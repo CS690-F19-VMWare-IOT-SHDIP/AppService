@@ -6,7 +6,7 @@ import cs.usfca.edu.edgex.device.DeviceType;
  * DeviceModel specifies the device specific attributes
  * that can be used to call specific events on physical device.
  */
-public class DeviceModel {
+public abstract class DeviceModel {
 	private String deviceName;
 	// TODO : Create a map to support single-device multiple-commands and resource-names.
 	// TODO : Consider deviceID inside DeviceModel

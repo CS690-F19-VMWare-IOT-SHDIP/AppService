@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import cs.usfca.edu.edgex.device.DeviceType;
+import cs.usfca.edu.edgex.exceptions.InvalidInputException;
 import cs.usfca.edu.edgex.model.DeviceIdModel;
 import cs.usfca.edu.edgex.model.DeviceModel;
 import cs.usfca.edu.edgex.model.ErrorModel;
@@ -37,10 +38,11 @@ public class DeviceAPI {
 	 * Registers new physical device.
 	 * @param deviceModel
 	 * @return ResponseEntity<?>
+	 * @throws InvalidInputException 
 	 */
 	@PostMapping(value = "/register", consumes = "application/json")
 	@ResponseBody()
-	public ResponseEntity<?> registerDevice(@RequestBody DeviceModel deviceModel) {
+	public ResponseEntity<?> registerDevice(@RequestBody DeviceModel deviceModel) throws InvalidInputException {
 		String resp = DeviceHandlers.registerPhysicalDevice(deviceModel);
 		if(resp != null) {
 			return ResponseEntity.status(HttpStatus.OK).body(new DeviceIdModel(resp));

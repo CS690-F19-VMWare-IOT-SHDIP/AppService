@@ -12,6 +12,8 @@ import cs.usfca.edu.edgex.device.DeviceType;
 import cs.usfca.edu.edgex.edgexclient.DeviceEvent;
 import cs.usfca.edu.edgex.edgexclient.EdgeXClient;
 import cs.usfca.edu.edgex.edgexclient.Readings;
+import cs.usfca.edu.edgex.exceptions.InvalidInputException;
+import cs.usfca.edu.edgex.model.BulbModel;
 import cs.usfca.edu.edgex.model.DeviceModel;
 
 /**
@@ -23,9 +25,14 @@ public class BulbDevice implements PhysicalDevice<Boolean> {
 	private Boolean value;
 	
 	
-	public BulbDevice(DeviceModel bulb) {
-		this.bulb = bulb;
-		this.value = false;
+	public BulbDevice(DeviceModel bulb) throws InvalidInputException {
+		if(bulb instanceof BulbModel) {
+			this.bulb = bulb;
+			this.value = false;
+		}
+		else {
+			throw new InvalidInputException("Wrong object passed in to SlackDevice");
+		}
 	}
 
 	/**

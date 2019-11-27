@@ -91,6 +91,7 @@ public class InputModelHandlers {
 				reflections = new Reflections("cs.usfca.edu.edgex");
 				reflectionsVirtualModels = new Reflections("cs.usfca.edu.edgex.model");
 				Set<Class<? extends Model>> virtualModels =  reflections.getSubTypesOf(Model.class);
+				Set<Class<? extends DeviceModel>> physicalModels =  reflections.getSubTypesOf(DeviceModel.class);
 		    	Set<Class<? extends Device>> virtual = reflections.getSubTypesOf(Device.class);
 		    	Set<Class<? extends PhysicalDevice>> physical = reflections.getSubTypesOf(PhysicalDevice.class);
 		    	for(Class<? extends Device> clazz : virtual) {
@@ -113,12 +114,18 @@ public class InputModelHandlers {
 		    	}
 		    	for(Class<? extends PhysicalDevice> clazz : physical) {
 		    		if(!clazz.isInterface() && clazz.getSimpleName().toLowerCase().contains(deviceType.toLowerCase())) {
-		    			System.out.println("It's a physical device" +  " Class name: " + clazz.getSimpleName());
-		    			DeviceModel model = gson.fromJson(deviceJson, DeviceModel.class);
-		    			Constructor <?> cons = clazz.getConstructor(DeviceModel.class);
-		    			PhysicalDevice<?> device = (PhysicalDevice<?>) cons.newInstance(model);
-		    			deviceId = registerPhysicalDevice(device);
-		    			deviceCreatedSuccessfully = true;
+		    			for(Class<? extends DeviceModel> dm : physicalModels) {
+		    				if(dm.getSimpleName().toLowerCase().contains(deviceType.toLowerCase())) {
+		    					System.out.println("Found the model! Name: " + dm.getSimpleName());
+		    					Constructor<?> c = dm.getConstructor();
+		    					Type obj = TypeToken.getParameterized(dm, c.newInstance().getClass()).getType();
+		    					DeviceModel physicalModel = gson.fromJson(deviceJson, obj);
+		    					Constructor <?> cons = clazz.getConstructor(DeviceModel.class);
+		    					PhysicalDevice<?> device = (PhysicalDevice<?>) cons.newInstance(physicalModel);
+				    			deviceId = registerPhysicalDevice(device);
+				    			deviceCreatedSuccessfully = true;
+		    				}
+		    			}
 		    		}
 		    	}
 		    	if(!deviceCreatedSuccessfully || deviceId.isEmpty()) {
