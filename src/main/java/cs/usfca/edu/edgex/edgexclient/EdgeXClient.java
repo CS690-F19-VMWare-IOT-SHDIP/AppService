@@ -11,8 +11,8 @@ public class EdgeXClient {
 	private static Request request = new Request();
 		
 	
-	public static String get(DeviceModel deviceModel, String deviceID) {
-		String urlPath = URLPaths.DEVICE_EVENT.replaceAll("\\{\\}", deviceID).replaceAll("\\[\\]", deviceModel.getResourceName());
+	public static String get(DeviceModel deviceModel) {
+		String urlPath = URLPaths.DEVICE_EVENT.replaceAll("\\{\\}", deviceModel.getDeviceID()).replaceAll("\\[\\]", deviceModel.getResourceName());
 		URL url = request.url(URLPaths.HOSTANME, urlPath);
 		HttpURLConnection con = request.connect(url, "GET");
 		
@@ -27,11 +27,13 @@ public class EdgeXClient {
 	}
 	
 	// TODO: Make put boolean.
-	public static String put(DeviceModel deviceModel, String deviceID, String putBody) {
+	public static String put(DeviceModel deviceModel, String putBody) {
 		
 		System.out.println("** " + putBody);
-		
-		String urlPath = URLPaths.DEVICE_EVENT.replaceAll("\\{\\}", deviceID).replaceAll("\\[\\]", deviceModel.getResourceName());
+		System.out.println(URLPaths.DEVICE_EVENT);
+		System.out.println("deviceID:" + deviceModel.getDeviceID());
+		System.out.println("resourceName:" + deviceModel.getResourceName());
+		String urlPath = URLPaths.DEVICE_EVENT.replaceAll("\\{\\}", deviceModel.getDeviceID()).replaceAll("\\[\\]", deviceModel.getResourceName());
 		URL url = request.url(URLPaths.HOSTANME, urlPath);
 		HttpURLConnection con = request.connect(url, "PUT");
 		

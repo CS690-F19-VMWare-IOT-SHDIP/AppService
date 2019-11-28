@@ -1,0 +1,28 @@
+{
+	"devices": "{\"channel\" : \"YOUR_CHANNEL_ID_HERE\", \"token\" : \"YOUR_TOKEN_HERE\", \"command\" : \"BULB_ON\"} | {\"deviceName\" : \"DynamicLed-Device-01\", \"command\" : \"SwitchDynamicLed\", \"resourceName\" : \"states\", \"deviceType\" : \"LED\", \"pin\":13, \"state\":true} | {\"deviceName\" : \"DynamicLed-Device-01\", \"command\" : \"SwitchDynamicLed\", \"resourceName\" : \"states\", \"deviceType\" : \"LED\", \"pin\":19, \"state\":true} | {\"deviceName\" : \"DynamicLed-Device-01\", \"command\" : \"SwitchDynamicLed\", \"resourceName\" : \"states\", \"deviceType\" : \"LED\", \"pin\":26, \"state\":true}",
+	"deviceType": ["Slack", "Led", "Led", "Led"],
+	"events": ["SlackEvent", "LEDOnEvent", "LEDOnEvent", "LEDOnEvent"],
+	"flow": {
+		"head": {
+			"nodeId": "abraham",
+			"eventIds": ["0"],
+			"childNodeIds": ["isaac"]
+		},
+		"children": [{
+				"nodeId": "isaac",
+				"eventIds": ["1"],
+				"childNodeIds": ["jacob"]
+			},
+			{
+				"nodeId": "jacob",
+				"eventIds": ["2"],
+				"childNodeIds": ["joseph"]
+			},
+			{
+				"nodeId": "joseph",
+				"eventIds": ["3"],
+				"childNodeIds": []
+			}
+		]
+	}
+}

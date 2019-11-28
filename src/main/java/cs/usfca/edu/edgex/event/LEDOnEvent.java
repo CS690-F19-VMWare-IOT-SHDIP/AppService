@@ -1,5 +1,7 @@
 package cs.usfca.edu.edgex.event;
 
+import org.apache.tomcat.jni.Time;
+
 import cs.usfca.edu.edgex.device.Device;
 import cs.usfca.edu.edgex.device.DeviceType;
 import cs.usfca.edu.edgex.exceptions.UnsupportedDeviceTypeException;
@@ -36,7 +38,25 @@ public class LEDOnEvent implements Event {
 	 */
 	public void trigger() {
 		if(led.get() == null || !led.get()) {
-			led.set(true); // Triggers LED on.
+			Thread t = new Thread() {
+				public void run() {
+					try {
+						this.sleep(3000);
+						led.set(false);
+					} catch (InterruptedException e) {
+						e.printStackTrace();
+					}
+				}
+			};
+			try {
+				Thread.sleep(1000);
+				led.set(true);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			t.start();
+			 // Triggers LED on.
 		}
 	}
 	

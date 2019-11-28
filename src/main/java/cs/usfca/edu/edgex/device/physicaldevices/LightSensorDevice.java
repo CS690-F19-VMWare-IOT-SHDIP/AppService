@@ -27,7 +27,7 @@ public class LightSensorDevice implements PhysicalDevice<Integer> {
 	@Override
 	public Integer get() {
 		String deviceID = DeviceHandlers.getPhysicalDeviceID(this);
-		String responseData = EdgeXClient.get(this.ledSensor, deviceID);
+		String responseData = EdgeXClient.get(this.ledSensor);
 		DeviceEvent reading = new Gson().fromJson(responseData.toString(), DeviceEvent.class);
 		this.value = reading.getReadings().get(0).getValue().equals("1") ? 1 : 0;
 		return value;
@@ -38,7 +38,7 @@ public class LightSensorDevice implements PhysicalDevice<Integer> {
 		String deviceID = DeviceHandlers.getPhysicalDeviceID(this);
 		if (value != val) {
 			JSONObject putBody = new JSONObject().put(this.ledSensor.getResourceName(), val);
-			String responseData = EdgeXClient.put(this.ledSensor, deviceID, putBody.toString());
+			String responseData = EdgeXClient.put(this.ledSensor, putBody.toString());
 			if (responseData != null) {
 				this.value = val;
 			}

@@ -156,13 +156,14 @@ public class InputModelHandlers {
 		}
 		if(device.getDeviceType() != null) {
 			// ONLY uncomment these three lines below when testing and not connected to EdgeX
-//			String deviceId = UUID.randomUUID().toString();
-//			DeviceHandlers.addPhysicalDevice(deviceId, device);
-//			return deviceId;
+			DeviceID edeviceId = gson.fromJson(EdgeXClient.getDeviceID(device.getDeviceModel().getDeviceName()), DeviceID.class);
+			device.getDeviceModel().setDeviceID(edeviceId.getDeviceID());
+			String deviceId = UUID.randomUUID().toString();
+			DeviceHandlers.addPhysicalDevice(deviceId, device);
+			//return deviceId;
 			//TODO: Comment three lines above & Uncomment three lines below after testing
-			DeviceID deviceId = gson.fromJson(EdgeXClient.getDeviceID(device.getDeviceModel().getDeviceName()), DeviceID.class);
-			DeviceHandlers.addPhysicalDevice(deviceId.getDeviceID(), device);
-			return deviceId.getDeviceID();
+			//DeviceHandlers.addPhysicalDevice(deviceId.getDeviceID(), device);
+			return deviceId;
 		}
 		return null;
 	}

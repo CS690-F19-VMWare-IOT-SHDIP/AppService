@@ -8,9 +8,9 @@ import cs.usfca.edu.edgex.device.DeviceType;
  */
 
 public abstract class DeviceModel {
+	private String deviceID;
 	private String deviceName;
 	// TODO : Create a map to support single-device multiple-commands and resource-names.
-	// TODO : Consider deviceID inside DeviceModel
 	private String command;
 	private String resourceName;
 	private DeviceType deviceType;
@@ -20,6 +20,12 @@ public abstract class DeviceModel {
 	}
 	public void setDeviceType(DeviceType deviceType) {
 		this.deviceType = deviceType;
+	}
+	public String getDeviceID() {
+		return deviceID;
+	}
+	public void setDeviceID(String deviceID) {
+		this.deviceID = deviceID;
 	}
 	public String getDeviceName() {
 		return deviceName;
