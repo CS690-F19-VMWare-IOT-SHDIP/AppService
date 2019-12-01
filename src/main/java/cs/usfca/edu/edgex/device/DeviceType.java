@@ -5,5 +5,6 @@ public enum DeviceType {
 	BULB,
 	LED,
 	LDR,
+	FAN,
 	UNKNOWN;
 }

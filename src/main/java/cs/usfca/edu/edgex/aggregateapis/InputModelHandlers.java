@@ -134,6 +134,7 @@ public class InputModelHandlers {
 		    		throw new InvalidInputException("Device: " + deviceJson + " from input JSON is invalid");
 		    	}
 		    	String eventId = bindEventToDevice(deviceId, eventName);
+		    	System.out.println(deviceId + " : " + eventName + " : " + eventId);
 		    	eventIds.add(eventId);
 			}
 		}

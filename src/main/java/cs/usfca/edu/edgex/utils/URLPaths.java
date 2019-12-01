@@ -16,4 +16,9 @@ public class URLPaths {
 	
 	public static String GET_OLDEST_SLACK_MSG = "https://slack.com/api/conversations.history?"
 			+ "token=YOUR_TOKEN_HERE&channel=CONVERSATION_ID_HERE&oldest=OLDEST_TIMESTAMP_HERE&limit=1";
+
+	public static String POST_SLACK_MESSAGE = "https://slack.com/api/chat.postMessage";
+
+	public static String token = "";
+	public static String channelID = "";
 }
