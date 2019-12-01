@@ -9,6 +9,9 @@ import cs.usfca.edu.edgex.model.SlackResponse;
 import cs.usfca.edu.edgex.utils.AlexaCommands;
 import cs.usfca.edu.edgex.utils.URLPaths;
 
+/**
+ * Support virtual device Alexa.
+ */
 public class AlexaDevice implements Device<AlexaModel> {
 	
 	private AlexaModel alexa;
@@ -27,7 +30,6 @@ public class AlexaDevice implements Device<AlexaModel> {
 	@Override
 	public AlexaModel get() {
 		float latestTimestamp = AlexaClient.getTimeStamp(alexa.getMessageType());
-		System.out.println("### " + latestTimestamp);
 		if (latestTimestamp != 0) {
 			alexa.setTimeStamp(latestTimestamp);
 			System.out.println("!!!!!***** Got new message from Alexa skill client for Alexa device");
@@ -60,7 +62,6 @@ public class AlexaDevice implements Device<AlexaModel> {
 	@Override
 	public boolean equals(Device<?> device) {
 		if(device.getDevice() instanceof AlexaModel) {
-//			AlexaModel received = (AlexaModel) device;
 			AlexaDevice received = (AlexaDevice) device;
 			if(received.alexa.getMessageType().equals(alexa.getMessageType()) && received.alexa.getTimestamp() == alexa.getTimestamp()) {
 				return true;

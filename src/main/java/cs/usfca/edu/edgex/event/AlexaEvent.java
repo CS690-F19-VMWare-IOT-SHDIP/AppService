@@ -5,7 +5,9 @@ import cs.usfca.edu.edgex.device.Device;
 import cs.usfca.edu.edgex.device.DeviceType;
 import cs.usfca.edu.edgex.exceptions.UnsupportedDeviceTypeException;
 import cs.usfca.edu.edgex.model.AlexaModel;
-
+/**
+ * Events pertaining to Alexa and read data from Alexa device.
+ */
 public class AlexaEvent implements Event {
 	
 	private static DeviceType deviceType = DeviceType.VIRTUAL;
@@ -22,7 +24,6 @@ public class AlexaEvent implements Event {
 
 	@Override
 	public boolean isActive() {
-		// TODO Auto-generated method stub
 		if(this.device instanceof AlexaDevice) {
 			AlexaDevice alexaDevice = (AlexaDevice) this.device;
 			if(alexaDevice.get() == null) {
@@ -36,7 +37,6 @@ public class AlexaEvent implements Event {
 
 	@Override
 	public void trigger() {
-		// TODO Auto-generated method stub
 		System.out.println("Unimplemented method trigger for Alexa Device");
 	}
 	

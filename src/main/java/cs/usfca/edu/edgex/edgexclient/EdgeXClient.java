@@ -7,10 +7,17 @@ import com.google.gson.Gson;
 import cs.usfca.edu.edgex.model.DeviceModel;
 import cs.usfca.edu.edgex.utils.URLPaths;
 
+/**
+ * Client Proxy to pull and push device readings into EdgeX
+ */
 public class EdgeXClient {
 	private static Request request = new Request();
 		
-	
+	/**
+	 * Get readings for a given deviceID and resourceName
+	 * @param deviceModel
+	 * @return String
+	 */
 	public static String get(DeviceModel deviceModel) {
 		String urlPath = URLPaths.DEVICE_EVENT.replaceAll("\\{\\}", deviceModel.getDeviceID()).replaceAll("\\[\\]", deviceModel.getResourceName());
 		URL url = request.url(URLPaths.HOSTANME, urlPath);
@@ -26,13 +33,14 @@ public class EdgeXClient {
 		return null;
 	}
 	
-	// TODO: Make put boolean.
+	/**
+	 * Put or set a device's state
+	 * @param deviceModel
+	 * @param putBody
+	 * @return String
+	 */
 	public static String put(DeviceModel deviceModel, String putBody) {
-		
-		System.out.println("** " + putBody);
-		System.out.println(URLPaths.DEVICE_EVENT);
-		System.out.println("deviceID:" + deviceModel.getDeviceID());
-		System.out.println("resourceName:" + deviceModel.getResourceName());
+
 		String urlPath = URLPaths.DEVICE_EVENT.replaceAll("\\{\\}", deviceModel.getDeviceID()).replaceAll("\\[\\]", deviceModel.getResourceName());
 		URL url = request.url(URLPaths.HOSTANME, urlPath);
 		HttpURLConnection con = request.connect(url, "PUT");
@@ -46,6 +54,11 @@ public class EdgeXClient {
 		return "";
 	}
 	
+	/**
+	 * Get deviceID for a deviceName
+	 * @param deviceName
+	 * @return
+	 */
 	public static String getDeviceID(String deviceName) {
 		String urlPath = URLPaths.GET_DEVICE_META.replaceAll("\\{deviceName\\}", deviceName);
 		URL url = request.url(URLPaths.HOSTANME, urlPath);

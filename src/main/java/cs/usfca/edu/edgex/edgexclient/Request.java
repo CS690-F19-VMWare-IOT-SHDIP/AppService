@@ -8,7 +8,9 @@ import java.net.ConnectException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-
+/**
+ * HttpURLConnection utils.
+ */
 public class Request {
 	
 	public URL url(String hostName, String path) {
@@ -29,7 +31,7 @@ public class Request {
 			con.setRequestMethod(requestMethod);
 		} 
 		catch (IOException e) {
-//			e.printStackTrace();
+			System.out.println("Problem in opening a connection");
 		}
 		return con;
 	}
@@ -45,7 +47,7 @@ public class Request {
 				con.setRequestProperty("Authorization", authorization);
 		} 
 		catch (IOException e) {
-//			e.printStackTrace();
+			System.out.println("Problem in opening a connection");
 		}
 		return con;
 	}

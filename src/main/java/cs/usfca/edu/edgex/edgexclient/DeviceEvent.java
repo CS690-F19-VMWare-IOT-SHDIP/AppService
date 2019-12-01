@@ -3,7 +3,9 @@ package cs.usfca.edu.edgex.edgexclient;
 import java.util.ArrayList;
 
 import com.google.gson.annotations.SerializedName;
-
+/**
+ * Class object to communicate with EdgeX for a device's related data.
+ */
 public class DeviceEvent {
 	
 	@SerializedName("device")
